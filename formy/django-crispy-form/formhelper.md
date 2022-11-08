@@ -148,10 +148,11 @@ form.helper.form_action = reverse('url_name', kwargs={'book_id': book.id})
 
 По умолчанию `True`.
 
-|                                       |                                               |
-| ------------------------------------- | --------------------------------------------- |
-| ![](../../.gitbook/assets/radio.webp) | ![](../../.gitbook/assets/custom\_radio.webp) |
-|                                       |                                               |
-|                                       |                                               |
+| Стандартный вид                             | Дополнительный вид                               |
+| ------------------------------------------- | ------------------------------------------------ |
+| ![](../../.gitbook/assets/radio.webp)       | ![](../../.gitbook/assets/custom\_radio.webp)    |
+| ![](../../.gitbook/assets/checkbox.webp)    | ![](../../.gitbook/assets/custom\_checkbox.webp) |
+| ![](../../.gitbook/assets/select.webp)      | ![](../../.gitbook/assets/custom\_select.png)    |
+| ![](../../.gitbook/assets/file\_field.webp) |                                                  |
 
 ## Пользовательские вспомогательные атрибуты
