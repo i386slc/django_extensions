@@ -22,3 +22,5 @@
 
 * [django-crispy-form](formy/django-crispy-form/README.md)
   * [Установка django-crispy-forms](formy/django-crispy-form/ustanovka-django-crispy-forms.md)
+  * [Фильтр crispy](formy/django-crispy-form/filtr-crispy.md)
+  * [Тег \{% crispy %\} с формами](formy/django-crispy-form/teg-crispy-s-formami.md)
