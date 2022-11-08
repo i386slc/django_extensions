@@ -246,6 +246,119 @@ MultiField("Text for the label {{ username }}",
 
 ## Объекты Bootstrap Layout
 
+Они находятся в модуле **crispy\_forms.bootstrap**.
+
+### FormActions
+
+Оборачивает поля в `<div class="form-actions">`. Обычно используется для обертывания кнопок формы:
+
+```python
+FormActions(
+    Submit('save', 'Save changes'),
+    Button('cancel', 'Cancel')
+)
+```
+
+<figure><img src="../../.gitbook/assets/form_actions.webp" alt=""><figcaption></figcaption></figure>
+
+### AppendedText
+
+Отображает ввод текста с добавлением **bootstrap**. Первый параметр — это имя поля **name**, в которое добавляется дополнительный текст, затем добавленный текст, который может быть похож на HTML. Существует необязательный параметр **active**, по умолчанию установленный в `False`, который вы можете установить в логическое значение, чтобы сделать добавленный текст активным. См. [input\_size](https://django-crispy-forms.readthedocs.io/en/latest/layouts.html#input-size), чтобы изменить размер этого ввода:
+
+```python
+# Синтаксис
+AppendedText('field_name', 'appended text to show')
+# Пример
+AppendedText('field_name', '$', active=True)
+```
+
+<figure><img src="../../.gitbook/assets/appended_text.webp" alt=""><figcaption></figcaption></figure>
+
+### PrependedText
+
+Отображает ввод текста с добавлением **bootstrap**. Первый параметр — это имя поля **name**, в которое нужно добавить текст, а затем текст, который может быть похож на HTML. Существует необязательный параметр **active**, по умолчанию установленный в `False`, который вы можете установить в логическое значение, чтобы активировать предшествующий текст. См. [input\_size](https://django-crispy-forms.readthedocs.io/en/latest/layouts.html#input-size), чтобы изменить размер этого ввода:
+
+```python
+# Синтаксис
+PrependedText('field_name', '<b>Prepended text</b> to show')
+# Пример
+PrependedText('field_name', '@', placeholder="username")
+```
+
+<figure><img src="../../.gitbook/assets/prepended_text.webp" alt=""><figcaption></figcaption></figure>
+
+### PrependedAppendedText
+
+Отображает комбинированный текст с добавлением спереди и сзади. Первый параметр — это имя поля **name**, затем добавляемый текст в начало и, наконец, добавляемый текст в конец. См. [input\_size](https://django-crispy-forms.readthedocs.io/en/latest/layouts.html#input-size), чтобы изменить размер этого ввода:
+
+```python
+PrependedAppendedText('field_name', '$', '.00'),
+```
+
+<figure><img src="../../.gitbook/assets/appended_prepended_text (1).webp" alt=""><figcaption></figcaption></figure>
+
+### InlineCheckboxes
+
+Отображает поле Django **forms.MultipleChoiceField**, используя встроенные флажки:
+
+```python
+InlineCheckboxes('field_name')
+```
+
+<figure><img src="../../.gitbook/assets/inline_checkboxes.webp" alt=""><figcaption></figcaption></figure>
+
+### InlineRadios
+
+Отображает поле Django **forms.ChoiceField** с его виджетом, установленным на **forms.RadioSelect**, используя встроенные переключатели:
+
+```python
+InlineRadios('field_name')
+```
+
+<figure><img src="../../.gitbook/assets/inline_radios.jpg" alt=""><figcaption></figcaption></figure>
+
+### StrictButton
+
+Он отображает кнопку, используя html-тег `<button>`, а не ввод **input**. По умолчанию для установлен тип **type** со значением **button**, а для класса **class** установлено значение **btn**:
+
+```python
+StrictButton("Button's content", name="go", value="go", css_class="extra")
+StrictButton('Success', css_class="btn-success")
+```
+
+<figure><img src="../../.gitbook/assets/strict_button.webp" alt=""><figcaption></figcaption></figure>
+
+### FieldWithButton
+
+Вы можете создать ввод, связанный с кнопками:
+
+```
+# Размер поля можно настроить в пакете шаблонов Bootstrap4,
+# передав класс модификатора размера в input_size.
+
+FieldWithButtons('field_name', StrictButton("Go!"), input_size="input-group-sm")
+```
+
+<figure><img src="../../.gitbook/assets/field_with_buttons.webp" alt=""><figcaption></figcaption></figure>
+
+### Tab & TabHolder
+
+**Tab** отображает вкладку, разные вкладки должны быть обернуты в **TabHolder** для автоматического функционирования JavaScript, также вам понадобится **bootstrap-tab.js**, включенный в ваши статические файлы:
+
+```python
+TabHolder(
+    Tab('First Tab',
+        'field_name_1',
+        Div('field_name_2')
+    ),
+    Tab('Second Tab',
+        Field('field_name_3', css_class="extra")
+    )
+)
+```
+
+<figure><img src="../../.gitbook/assets/tab_and_tabholder.jpg" alt=""><figcaption></figcaption></figure>
+
 ## Переопределение шаблонов объектов макета
 
 ## Переопределение шаблонов проектов
