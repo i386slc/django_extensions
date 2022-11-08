@@ -222,12 +222,137 @@ self.helper.form_tag = False
 
 ## Сделайте так, чтобы crispy формы терпели неудачу громко
 
+По умолчанию, когда **crispy-forms** обнаруживает ошибки, он молча завершает работу, регистрирует их и продолжает работать, если это возможно. Была добавлена переменная настроек под названием **CRISPY\_FAIL\_SILENTLY**, чтобы вы могли контролировать это поведение. Если вы хотите создавать исключения вместо ведения журнала, сообщая вам, что происходит, когда вы разрабатываете в режиме отладки, вы можете установить для него значение:
+
+```python
+CRISPY_FAIL_SILENTLY = not DEBUG
+```
+
 ## Изменить `<input>` классы по умолчанию для crispy-forms
 
-## Визуализация формы в коде Python
+Поля Django генерируют классы по умолчанию, **crispy-forms** обрабатывает их и добавляет другие классы для совместимости с фреймворками CSS.
+
+Например, **CharField** генерирует `<input class="textinput" ...`. Но в форме **uni** нам нужно, чтобы класс был **textInput** (с заглавной `"I"`), поэтому **crispy-forms** оставляет его как `<input class="textinput textInput" ...`. Все официальные пакеты шаблонов обрабатываются автоматически, но, возможно, вы интегрируете новую структуру CSS или собственную структуру вашей компании с четкими формами и вам нужно изменить преобразования по умолчанию. Для этого вам нужно использовать переменную настроек с именем **CRISPY\_CLASS\_CONVERTERS**, которая должна быть _словарем Python_:
+
+```python
+CRISPY_CLASS_CONVERTERS = {'textinput': "textinput inputtext"}
+```
+
+Например, этот параметр будет генерировать `<input class"textinput inputtext" ...`. Ключ словаря **textinput** - это класс Django по умолчанию, значение - это то, на что вы хотите его заменить, в этом случае мы сохраняем **textinput**.
+
+## Рендеринг формы в коде Python
+
+Иногда может быть полезно отобразить форму, используя **crispy-forms** в коде Python, например представление Django, для этого есть хороший помощник **render\_crispy\_form**. Прототипом метода является `render_crispy_form(form, helper=None, context=None)`. Вы можете использовать это так. Не забудьте передать свой токен **CSRF** вспомогательному методу, используя словарь контекста, если вы хотите, чтобы визуализированная форма могла быть отправлена.
 
 ## Рецепт проверки AJAX
 
+Вы можете проверить **crispy-forms** с помощью **AJAX**, чтобы повторно отобразить любые возникающие ошибки формы. Один из способов сделать это — настроить представление, которое проверяет форму и отображает ее html с помощью **render\_crispy\_form**. Затем этот HTML-код возвращается в клиентский AJAX-запрос. Давайте посмотрим пример.
+
+Наш код на стороне сервера может быть:
+
+```python
+from django.template.context_processors import csrf
+from crispy_forms.utils import render_crispy_form
+
+@json_view
+def save_example_form(request):
+    form = ExampleForm(request.POST or None)
+    if form.is_valid():
+        # На самом деле вы можете сохранить через AJAX и вернуть код успеха здесь
+        form.save()
+        return {'success': True}
+
+    ctx = {}
+    ctx.update(csrf(request))
+    form_html = render_crispy_form(form, context=ctx)
+    return {'success': False, 'form_html': form_html}
+```
+
+Я использую декоратор **jsonview** от [django-jsonview](https://github.com/jsocol/django-jsonview).
+
+Обратите внимание, что вы должны предоставить **render\_crispy\_form** необходимый **токен CSRF**, иначе он не будет работать.
+
+В нашей клиентской части использование **jQuery** будет выглядеть так:
+
+```javascript
+var example_form = '#example-form';
+
+$.ajax({
+    url: "{% raw %}
+{% url 'save_example_form' %}
+{% endraw %}",
+    type: "POST",
+    data: $(example_form).serialize(),
+    success: function(data) {
+        if (!(data['success'])) {
+            // Здесь мы заменяем форму на
+            $(example_form).replaceWith(data['form_html']);
+        }
+        else {
+            // Здесь вы можете показать пользователю сообщение об успехе
+            // или сделать все, что вам нужно.
+            $(example_form).find('.success-message').show();
+        }
+    },
+    error: function () {
+        $(example_form).find('.error-message').show()
+    }
+});
+```
+
+{% hint style="warning" %}
+При замене html формы вам необходимо привязать события, используя метод **live** или **on** jQuery.
+{% endhint %}
+
 ## Bootstrap горизонтальные формы
 
+<figure><img src="../../.gitbook/assets/bootstrap3_horizontal_form.webp" alt=""><figcaption></figcaption></figure>
+
+То, как вы делаете горизонтальные формы в **Bootstrap** версии **3**, устанавливает некоторые классы **col-lg-X** в метках и полях упаковки **div**. Это означало бы много хлопот при обновлении объектов макета (layout) для настроек этих классов, слишком много детализации. Вместо этого были добавлены некоторые атрибуты **FormHelper**, которые помогут вам легко достичь этого. Вам нужно будет установить только три атрибута:
+
+```python
+helper.form_class = 'form-horizontal'
+helper.label_class = 'col-lg-2'
+helper.field_class = 'col-lg-8'
+helper.layout = Layout(
+    'email',
+    'password',
+    'remember_me',
+    StrictButton('Sign in', css_class='btn-default'),
+)
+```
+
+Конечно, вы можете установить ширину по своему усмотрению, она не обязательно должна быть именно такой.
+
 ## Встроенные формы Bootstrap
+
+<figure><img src="../../.gitbook/assets/bootstrap3_inline_form.jpg" alt=""><figcaption></figcaption></figure>
+
+Как вы делаете встроенные формы в **Bootstrap** версии **3**:
+
+```python
+helper.form_class = 'form-inline'
+helper.field_template = 'bootstrap3/layout/inline_field.html'
+helper.layout = Layout(
+    'email',
+    'password',
+    'remember_me',
+    StrictButton('Sign in', css_class='btn-default'),
+)
+```
+
+{% hint style="info" %}
+Класс **form-inline** необходимо добавить в тег `<form>` формы. Поэтому позвольте **crispy-forms** отображать тег `<form>` или добавьте класс **form-inline** вручную к тегу `<form>` в вашем шаблоне.
+{% endhint %}
+
+Если вам нужно установить атрибуты в поле, вы должны использовать **InlineField** вместо **Field**:
+
+```python
+from crispy_forms.bootstrap import InlineField
+
+helper.layout = Layout(
+    InlineField('email', readonly=True),
+    'password',
+    [...]
+)
+```
