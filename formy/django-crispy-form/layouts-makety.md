@@ -359,6 +359,85 @@ TabHolder(
 
 <figure><img src="../../.gitbook/assets/tab_and_tabholder.jpg" alt=""><figcaption></figcaption></figure>
 
+### Accordion & AccordionGroup
+
+**AccordionGroup** отображает панель аккордеона, различные группы должны быть заключены в **Accordeon** для автоматического функционирования JavaScript, также вам понадобится **bootstrap-tab.js**, включенный в ваши статические файлы:
+
+```python
+Accordion(
+    AccordionGroup('First Group',
+        'radio_buttons'
+    ),
+    AccordionGroup('Second Group',
+        Field('field_name_3', css_class="extra")
+    )
+)
+```
+
+<figure><img src="../../.gitbook/assets/accordiongroup_and_accordion.jpg" alt=""><figcaption></figcaption></figure>
+
+### Alert
+
+**Alert** генерирует разметку в виде диалогового окна предупреждения:
+
+```python
+Alert(
+    content="<strong>Warning!</strong> Best check yo self, you're not looking too good."
+)
+```
+
+<figure><img src="../../.gitbook/assets/alert.webp" alt=""><figcaption></figcaption></figure>
+
+### UneditableField
+
+**UneditableField** отображает отключенное поле, используя класс **uneditable-input** начальной загрузки:
+
+```python
+UneditableField('text_input', css_class='form-control-lg')
+```
+
+<figure><img src="../../.gitbook/assets/field_disabled.webp" alt=""><figcaption></figcaption></figure>
+
+### Modal
+
+**Modal** отображает свои поля внутри модального окна начальной загрузки, которое можно настроить с помощью **kwargs** при инициализации. См. документы bootstrap для получения дополнительных примеров модальных окон и того, как управлять вашим модальным окном [с помощью атрибутов](https://getbootstrap.com/docs/4.0/components/modal/#via-data-attributes) или [с помощью javascript](https://getbootstrap.com/docs/4.0/components/modal/#via-javascript). Поддерживает только **Bootstrap v3** или выше:
+
+```python
+Layout(
+    Modal(
+        # email.help_text был установлен во время инициализации поля формы django
+        Field('email', placeholder="Email", wrapper_class="mb-0"),
+        Button(
+            "submit",
+            "Send Reset Email",
+            id="email_reset",
+            css_class="btn-primary mt-3",
+            onClick="someJavasciptFunction()", # используется для отправки формы
+        ),
+        css_id="my_modal_id",
+        title="This is my modal",
+        title_class="w-100 text-center",
+    )
+)
+```
+
+<figure><img src="../../.gitbook/assets/modal.webp" alt=""><figcaption></figcaption></figure>
+
+### Размер группы input
+
+По умолчанию используются стандартные размеры ввода **Bootstrap**. Чтобы настроить размер группы ввода (**AppendedText**, **PrependedText**, **PrependedAppendedText**), добавьте соответствующий класс CSS:
+
+```python
+# Bootstrap 3 - Входы (input) и интервалы (span) требуют класса размера.
+# Используйте `css_class`.
+PrependedText('field_name', StrictButton("Go!"), css_class="input-sm")
+PrependedText('field_name', StrictButton("Go!"), css_class="input-lg")
+
+# Bootstrap 4 - Обертка div требует класса размера. Используйте `input_size`.
+PrependedText('field_name', StrictButton("Go!"), input_size="input-group-sm")
+PrependedText('field_name', StrictButton("Go!"), input_size="input-group-lg")
+```
+
 ## Переопределение шаблонов объектов макета
 
 ## Переопределение шаблонов проектов
