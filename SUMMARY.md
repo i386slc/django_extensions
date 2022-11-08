@@ -17,3 +17,7 @@
   * [Технические детали](modeli/django-mptt/tekhnicheskie-detali.md)
   * [Тестирование MPTT моделей](modeli/django-mptt/testirovanie-mptt-modelei.md)
 * [django-mptt-admin](modeli/django-mptt-admin.md)
+
+## Формы
+
+* [django-crispy-form](formy/django-crispy-form.md)
