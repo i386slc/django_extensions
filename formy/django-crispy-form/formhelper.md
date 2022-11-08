@@ -155,4 +155,40 @@ form.helper.form_action = reverse('url_name', kwargs={'book_id': book.id})
 | ![](../../.gitbook/assets/select.webp)      | ![](../../.gitbook/assets/custom\_select.png)    |
 | ![](../../.gitbook/assets/file\_field.webp) |                                                  |
 
-## Пользовательские вспомогательные атрибуты
+## Пользовательские атрибуты Helper
+
+Может быть, вы хотели бы, чтобы **FormHelper** выполнял какие-то дополнительные функции, которые в настоящее время не поддерживаются, или, может быть, у вас есть очень специфический вариант использования. Хорошо, что вы можете добавить дополнительные атрибуты, и **crispy-forms** автоматически вставят их в контекст шаблона. Давайте посмотрим на пример, чтобы прояснить ситуацию.
+
+Мы хотим, чтобы у некоторых форм были метки в верхнем регистре, и для этого мы хотели бы установить для имени вспомогательного атрибута **labels\_uppercase** значение `True` или `False`. Итак, мы идем и устанавливаем наш помощник:
+
+```python
+helper.labels_uppercase = True
+```
+
+Что произойдет, **crispy-forms** вставят переменную шаблона Django с именем `{{ labels_uppercase }}` с соответствующим значением в своих шаблонах, включая **field.html**, который является шаблоном, отвечающим за отображение поля при использовании **crispy-forms**. Итак, мы можем перейти к этому шаблону и настроить его. Нам нужно будет с ним ознакомиться, но за ним довольно легко следовать; в конце концов, это просто шаблон Django.
+
+Когда мы находим, где рендерятся метки, этот кусок кода, если быть более точным:
+
+```django
+{% raw %}
+{% if field.label and not field|is_checkbox and form_show_labels %}
+    <label for="{{ field.id_for_label }}" class="control-label {% if field.field.required %}requiredField{% endif %}">
+        {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+    </label>
+{% endif %}
+{% endraw %}
+```
+
+Строка, которую мы бы изменили, закончилась бы так:
+
+```django
+{% raw %}
+{% if not labels_uppercase %}{{ field.label|safe }}{% else %}{{ field.label|safe|upper }}{% endif %}{% if field.field.required %}
+{% endraw %}
+```
+
+Теперь нам нужно только переопределить шаблон поля, для этого вы можете проверить раздел [Переопределение шаблонов объектов макета](https://django-crispy-forms.readthedocs.io/en/latest/layouts.html#override-templates).
+
+{% hint style="warning" %}
+Будьте осторожны, в зависимости от того, что вы хотите сделать, иногда лучше использовать динамические макеты, см. раздел [Обновление макетов на ходу](https://django-crispy-forms.readthedocs.io/en/latest/dynamic\_layouts.html#dynamic-layouts).
+{% endhint %}
