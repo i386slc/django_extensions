@@ -109,6 +109,141 @@ Field('field_name', css_id="custom_field_id")
 
 ## Объекты универсального макета
 
+Они находятся в модуле **crispy\_forms.layout**. Это объекты макета, не относящиеся к пакету шаблонов. Мы пройдем по одному за другим, показывая примеры использования:
+
+### Div
+
+Оборачивает поля в тег `<div>`:
+
+```python
+Div('form_field_1', 'form_field_2', 'form_field_3', ...)
+```
+
+{% hint style="info" %}
+В основном во всех объектах макета вы можете установить **kwargs**, которые будут использоваться в качестве атрибутов HTML. Поскольку **class** является зарезервированным ключевым словом в Python, для него вам придется использовать **css\_class**. Например:
+
+```python
+Div(
+    'form_field_1',
+    style="background: white;",
+    title="Explication title",
+    css_class="bigdivs"
+)
+```
+{% endhint %}
+
+### HTML
+
+Очень мощный объект макета. Используйте его для рендеринга чистого HTML-кода. Фактически он ведет себя как шаблон Django и имеет доступ ко всему контексту страницы, на которой отображается форма. Этот объект макета не принимает никаких дополнительных параметров, кроме **html** для рендеринга, вы не можете установить атрибуты html, как в **Div**:
+
+```python
+HTML("{% raw %}
+{% if success %} <p>Operation was successful</p> {% endif %}
+{% endraw %}")
+```
+
+{% hint style="warning" %}
+Помните, что это отображается в отдельном шаблоне, поэтому, если вы используете пользовательские теги шаблона или фильтры, не забудьте добавить свои `{% load custom_tags %}`
+{% endhint %}
+
+### Field
+
+Чрезвычайно полезный объект макета. Вы можете использовать его для установки атрибутов в поле или отображения определенного поля с помощью настраиваемого шаблона. Таким образом вам не придется явно переопределять виджет поля и передавать уродливый словарь **attrs**:
+
+```python
+Field('password', id="password-field", css_class="passwordfields", title="Explanation")
+Field('slider', template="custom-slider.html")
+```
+
+Этот объект макета можно использовать для простого расширения виджетов Django. Если вы хотите отобразить поле формы Django как _**скрытое**_, вы можете просто сделать:
+
+```python
+Field('field_name', type="hidden")
+```
+
+Если вам нужны атрибуты HTML5, вы можете легко сделать те, которые используют символы подчеркивания, **data\_name** kwarg здесь превратится в **data-name** в сгенерированном html:
+
+```python
+Field('field_name', data_name="special")
+```
+
+Поля в начальной загрузке заключены в `<div class="control-group">`. Вы можете установить дополнительные классы в этом **div**, для этого выполните:
+
+```python
+Field('field_name', wrapper_class="extra-class")
+```
+
+### Submit
+
+Используется для создания кнопки отправки. Первый параметр — это атрибут **name** кнопки, второй параметр — это атрибут **value**:
+
+```python
+Submit('search', 'SEARCH')
+```
+
+Отображает в:
+
+```html
+<input type="submit" name="search" value="SEARCH" class="submit submitButton" id="submit-id-search" />
+```
+
+### Hidden
+
+Используется для создания скрытого ввода:
+
+```python
+Hidden('name', 'value')
+```
+
+### Button
+
+Создает кнопку:
+
+```python
+Button('name', 'value')
+```
+
+### Reset
+
+Используется для создания ввода сброса:
+
+```python
+reset = Reset('name', 'value')
+```
+
+### Fieldset
+
+Он оборачивает поля в `<fieldset>`. Первый параметр — это текст для легенды набора полей, как мы уже говорили, он ведет себя как шаблон Django:
+
+```python
+Fieldset("Text for the legend {{ username }}",
+    'form_field_1',
+    'form_field_2'
+)
+```
+
+### ButtonHolder
+
+Он оборачивает поля в `<div class="buttonHolder">`, это устаревший объект макета из пакета шаблонов **uni-form**:
+
+```python
+ButtonHolder(
+    HTML('<span class="hidden">✓ Saved data</span>'),
+    Submit('save', 'Save')
+)
+```
+
+### MultiField
+
+Он заключает поля в `<div>` с меткой label сверху. Когда в отправке формы есть ошибки, они отображаются в списке, а не в каждом поле, окружающем поле:
+
+```python
+MultiField("Text for the label {{ username }}",
+    'form_field_1',
+    'form_field_2'
+)
+```
+
 ## Объекты Bootstrap Layout
 
 ## Переопределение шаблонов объектов макета
