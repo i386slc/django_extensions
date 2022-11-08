@@ -20,4 +20,5 @@
 
 ## Формы
 
-* [django-crispy-form](formy/django-crispy-form.md)
+* [django-crispy-form](formy/django-crispy-form/README.md)
+  * [Установка django-crispy-forms](formy/django-crispy-form/ustanovka-django-crispy-forms.md)
