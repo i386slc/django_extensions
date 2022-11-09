@@ -26,3 +26,4 @@
   * [Тег \{% crispy %\} с формами](formy/django-crispy-form/teg-crispy-s-formami.md)
   * [FormHelper](formy/django-crispy-form/formhelper.md)
   * [Layouts (макеты)](formy/django-crispy-form/layouts-makety.md)
+  * [Как создавать свои собственные пакеты шаблонов](formy/django-crispy-form/kak-sozdavat-svoi-sobstvennye-pakety-shablonov.md)
