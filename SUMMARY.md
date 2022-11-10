@@ -30,3 +30,4 @@
   * [\{% crispy %\} тег с наборами форм](formy/django-crispy-form/crispy-teg-s-naborami-form.md)
   * [Обновление макетов на ходу](formy/django-crispy-form/obnovlenie-maketov-na-khodu.md)
   * [Часто задаваемые вопросы](formy/django-crispy-form/chasto-zadavaemye-voprosy.md)
+  * [API helpers](formy/django-crispy-form/api-helpers.md)
