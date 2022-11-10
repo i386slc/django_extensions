@@ -97,3 +97,111 @@ HTML("{% raw %}
 {% crispy form 'bootstrap' %}
 {% endraw %}
 ```
+
+## templatetags.crispy\_forms\_tags.whole\_uni\_form\_template(_template\_pack=\<SimpleLazyObject: 'bootstrap4'>_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_tags.html#whole\_uni\_form\_template).
+
+## templatetags.crispy\_forms\_tags.whole\_uni\_formset\_template(_template\_pack=\<SimpleLazyObject: 'bootstrap4'>_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_tags.html#whole\_uni\_formset\_template).
+
+## templatetags.crispy\_forms\_filters.as\_crispy\_errors(_form_, _template\_pack=\<SimpleLazyObject: 'bootstrap4'>_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_filters.html#as\_crispy\_errors).
+
+Отображает только ошибки формы так же, как **django-crispy-forms**:
+
+```django
+{% raw %}
+{% load crispy_forms_tags %}
+{% endraw %}
+{{ form|as_crispy_errors }}
+```
+
+или:
+
+```django
+{{ form|as_crispy_errors:"bootstrap4" }}
+```
+
+## templatetags.crispy\_forms\_filters.as\_crispy\_field(_field_, _template\_pack=\<SimpleLazyObject: 'bootstrap4'>_, _label\_class=''_, _field\_class=''_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_filters.html#as\_crispy\_field).
+
+Визуализирует поле формы как поле **django-crispy-forms**:
+
+```django
+{% raw %}
+{% load crispy_forms_tags %}
+{% endraw %}
+{{ form.field|as_crispy_field }}
+```
+
+или:
+
+```django
+{{ form.field|as_crispy_field:"bootstrap4" }}
+```
+
+## templatetags.crispy\_forms\_filters.as\_crispy\_form(_form_, _template\_pack=\<SimpleLazyObject: 'bootstrap4'>_, _label\_class=''_, _field\_class=''_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_filters.html#as\_crispy\_form).
+
+Оригинальный и все еще очень полезный способ создания элегантной формы/набора форм **div**:
+
+```django
+{% raw %}
+{% load crispy_forms_tags %}
+
+<form class="my-class" method="post">
+    {% csrf_token %}
+{% endraw %}
+    {{ myform|crispy }}
+</form>
+```
+
+или, если вы хотите явно установить пакет шаблонов:
+
+```django
+{{ myform|crispy:"bootstrap4" }}
+```
+
+В **bootstrap3** или **bootstrap4** для горизонтальных форм вы можете сделать:
+
+```django
+{{ myform|label_class:"col-lg-2",field_class:"col-lg-8" }}
+```
+
+## templatetags.crispy\_forms\_filters.flatatt\_filter(_attrs_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_filters.html#flatatt\_filter).
+
+## templatetags.crispy\_forms\_filters.optgroups(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_filters.html#optgroups).
+
+Фильтр шаблонов, помогающий отображать поля с помощью групп опций.
+
+#### Возвращает
+
+Кортеж из label, option, index.
+
+* **label** - Групповая метка для сгруппированных групп опций (`None`, если входы не сгруппированы).
+* **option** - Словарь, содержащий информацию для отображения опции:
+
+```python
+{
+    "name": "checkbox_select_multiple",
+    "value": 1,
+    "label": 1,
+    "selected": False,
+    "index": "0",
+    "attrs": {"id": "id_checkbox_select_multiple_0"},
+    "type": "checkbox",
+    "template_name": "django/forms/widgets/checkbox_option.html",
+    "wrap_label": True,
+}
+```
+
+* **index** - Индекс группы
