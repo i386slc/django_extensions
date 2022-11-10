@@ -113,9 +113,87 @@ Layout(
 
 ## update\_attributes
 
+Обновляет атрибуты каждого объекта макета, содержащегося в срезе:
+
+```python
+Layout(
+    'field_1',
+    Field('field_2'),
+    Field('field_3')
+)
+```
+
+Мы могли бы сделать:
+
+```python
+form.helper[0:3].update_attributes(css_class="hello")
+```
+
+Макет превратится в:
+
+```python
+Layout(
+    'field_1',
+    Field('field_2', css_class='hello'),
+    Field('field_3', css_class='hello')
+)
+```
+
+Мы также можем применить его к имени поля, обернутому в объект макета:
+
+```python
+form.helper['field_2'].update_attributes(css_class="hello")
+```
+
+Однако следующее будет неверным:
+
+```python
+form.helper['field_1'].update_attributes(css_class="hello")
+```
+
+Потому что это изменит атрибуты **Layout**. Ваша задача правильно его завернуть.
+
 ## all
 
+Этот метод выбирает _**все объекты**_ макета глубины первого уровня:
+
+```python
+form.helper.all().wrap(Field, css_class="hello")
+```
+
 ## Выбор имени поля
+
+Если вы передаете строку с именем поля, это имя поля будет жадно искаться по всем уровням глубины макета. Представьте, что у нас есть такой макет:
+
+```python
+Layout(
+    'field_1',
+    Div(
+        Div('password')
+    ),
+    'field_3'
+)
+```
+
+Если мы делаем:
+
+```python
+form.helper['password'].wrap(Field, css_class="hero")
+```
+
+Предыдущий макет станет:
+
+```python
+Layout(
+    'field_1',
+    Div(
+        Div(
+            Field('password', css_class="hero")
+        )
+    ),
+    'field_3'
+)
+```
 
 ## filter
 
