@@ -250,3 +250,57 @@ HTML("{% raw %}
 {% crispy_addon form.my_field append=”.00” %}
 {% endraw %}
 ```
+
+## crispy\_forms\_field.crispy\_field(_parser_, _token_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#crispy\_field).
+
+```django
+{% raw %}
+{% crispy_field field attrs %}
+{% endraw %}
+```
+
+## crispy\_forms\_field.css\_class(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#css\_class).
+
+Возвращает имя класса виджетов в нижнем регистре
+
+## crispy\_forms\_field.is\_checkbox(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_checkbox).
+
+## crispy\_forms\_field.is\_checkboxselectmultiple(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_checkboxselectmultiple).
+
+## crispy\_forms\_field.is\_clearable\_file(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_clearable\_file).
+
+## crispy\_forms\_field.is\_file(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_file).
+
+## crispy\_forms\_field.is\_multivalue(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_multivalue).
+
+## crispy\_forms\_field.is\_password(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_password).
+
+## crispy\_forms\_field.is\_radioselect(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_radioselect).
+
+## crispy\_forms\_field.is\_select(_field_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#is\_select).
+
+## crispy\_forms\_field.pairwise(_iterable_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/templatetags/crispy\_forms\_field.html#pairwise).
+
+s -> (s0,s1), (s2,s3), (s4, s5), …
