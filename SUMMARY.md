@@ -28,3 +28,4 @@
   * [Layouts (макеты)](formy/django-crispy-form/layouts-makety.md)
   * [Как создавать свои собственные пакеты шаблонов](formy/django-crispy-form/kak-sozdavat-svoi-sobstvennye-pakety-shablonov.md)
   * [\{% crispy %\} тег с наборами форм](formy/django-crispy-form/crispy-teg-s-naborami-form.md)
+  * [Обновление макетов на ходу](formy/django-crispy-form/obnovlenie-maketov-na-khodu.md)
