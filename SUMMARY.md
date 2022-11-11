@@ -31,6 +31,6 @@
   * [Обновление макетов на ходу](formy/django-crispy-form/obnovlenie-maketov-na-khodu.md)
   * [Часто задаваемые вопросы](formy/django-crispy-form/chasto-zadavaemye-voprosy.md)
   * [API helpers](formy/django-crispy-form/api-helpers.md)
-  * [API Layout (не закончено)](formy/django-crispy-form/api-layout-ne-zakoncheno.md)
+  * [API Layout](formy/django-crispy-form/api-layout.md)
   * [API templatetags](formy/django-crispy-form/api-templatetags.md)
   * [API Bootstrap (не закончено)](formy/django-crispy-form/api-bootstrap-ne-zakoncheno.md)

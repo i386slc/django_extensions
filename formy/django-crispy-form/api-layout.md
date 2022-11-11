@@ -1,4 +1,4 @@
-# API Layout (не закончено)
+# API Layout
 
 ## _class_ layout.BaseInput(_name_, _value_, _\*_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
 
@@ -110,7 +110,7 @@ ButtonHolder(
 
 ## _class_ layout.Column(_\*fields_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
 
-Исходник.
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Column).
 
 Объект макета. Он заключает поля в `<div>`, а шаблон добавляет соответствующий класс для отображения содержимого в столбце, например, **col-md** при использовании пакета шаблонов **Bootstrap4**.
 
@@ -193,7 +193,7 @@ Div(
 
 ## _class_ layout.Field(_\*fields_, _css\_class=None_, _wrapper\_class=None_, _template=None_, _\*\*kwargs_)
 
-Исходник.
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Field).
 
 Объект **Layout**, обычно содержащий одно имя поля, к которому можно легко добавлять атрибуты.
 
@@ -218,7 +218,7 @@ Field('field_name', style="color: #333;", css_class="whatever", id="field_name")
 
 ## _class_ layout.Fieldset(_legend_, _\*fields_, _css\_class=None_, _css\_id=None_, _template=None_, _\*\*kwargs_)
 
-Исходник.
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Fieldset).
 
 Объект макета, который оборачивает поля в `<fieldset>`.
 
@@ -265,7 +265,7 @@ Fieldset("Data for {{ user.username }}",
 
 ## _class_ layout.HTML(_html_)
 
-Исходник.
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#HTML).
 
 Объект макета **Layout**. Он может содержать чистый HTML и имеет доступ ко всему контексту страницы, на которой отображается форма.
 
@@ -280,7 +280,7 @@ HTML('<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />')
 
 ## _class_ layout.Hidden(_name_, _value_, _\*_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
 
-Исходник.
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Hidden).
 
 Используется для создания скрытого дескриптора ввода для тега шаблона `{% crispy %}` .
 
@@ -393,6 +393,147 @@ MultiWidgetField(
         {'class': 'second_widget_class'}
     ),
 )
+```
+
+#### Атрибуты
+
+* **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
+
+## _class_ layout.Reset(_name_, _value_, _\*_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Reset).
+
+Используется для создания дескриптора кнопки сброса для тега шаблона `{% crispy %}` .
+
+#### Параметры
+
+* **name** (_str_) - Атрибут name кнопки.
+* **value** (_str_) - Атрибут value кнопки.
+* **css\_id** (_str_) (опционально) - Пользовательский идентификатор DOM для объекта макета. Если он не указан, аргумент имени зашифровывается и превращается в идентификатор кнопки отправки. По умолчанию `None`.
+* **css\_class** (_str_) (опционально) - Дополнительные классы CSS для применения к `<input>`. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<input>`.
+
+Примеры
+
+{% hint style="info" %}
+атрибут **form** для **render()** не требуется для унаследованных объектов **BaseInput**.
+{% endhint %}
+
+```python
+>>> reset = Reset('Reset This Form', 'Revert Me!')
+>>> reset.render("", "", Context())
+'<input type="reset" name="reset-this-form" value="Revert Me!" '
+'class="btn btn-inverse" id="reset-id-reset-this-form"/>'
+```
+
+```python
+>>> reset = Reset('Reset This Form', 'Revert Me!', css_id="custom-id",
+                     css_class="custom class", my_attr=True, data="my-data")
+>>> reset.render("", "", Context())
+'<input type="reset" name="reset-this-form" value="Revert Me!" '
+'class="btn btn-inverse custom class" id="custom-id" data="my-data" my-attr/>'
+```
+
+Обычно вы не будете вызывать метод рендеринга для объекта напрямую. Вместо этого добавьте его в свой макет вручную вручную или используйте метод **add\_input**:
+
+```python
+class ExampleForm(forms.Form):
+[...]
+def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.helper = FormHelper()
+    self.helper.add_input(Reset('Reset This Form', 'Revert Me!'))
+```
+
+#### Атрибуты
+
+* **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
+
+## _class_ layout.Row(_\*fields_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Row).
+
+Объект макета. Он заключает поля в `<divЮ`, а шаблон добавляет соответствующий класс для отображения содержимого в строке, например, **form-row** при использовании пакета шаблонов **Bootstrap4**.
+
+#### Параметры
+
+* **\*fields** (_str, Layout Object_) - Любое количество полей в качестве позиционных аргументов для отображения в `<div>`.
+* **css\_id** (_str_) (опционально) - Идентификатор DOM для объекта макета, который будет добавлен в `<div>`, если он предоставлен. По умолчанию `None`.
+* **css\_class** (_str_) (опционально) - Дополнительные классы CSS, которые должны применяться в дополнение к тем, которые объявлены самим классом. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<div>`.
+
+Примеры
+
+В своем макете **Layout** вы можете:
+
+```python
+Row('form_field_1', 'form_field_2', css_id='row-example')
+```
+
+Также возможно вкладывать объекты макета **Layout** в строку **Row**:
+
+```python
+Row(
+    Div(
+        Field('form_field', css_class='field-class'),
+        css_class='div-class',
+    ),
+    Div('form_field_2', css_class='div-class'),
+)
+```
+
+#### Атрибуты
+
+* **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
+* **css\_class** (_str_) (опционально) - Классы CSS, применяемые к элементу `<div>`. По умолчанию `None`.
+
+## _class_ layout.Submit(_name_, _value_, _\*_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Submit).
+
+Используется для создания дескриптора кнопки **Submit** для тега шаблона `{% crispy %}` .
+
+#### Параметры
+
+* **name** (_str_) - Атрибут name кнопки.
+* **value** (_str_) - Атрибут value кнопки.
+* **css\_id** (_str_) (опционально) - Пользовательский идентификатор DOM для объекта макета. Если он не указан, аргумент имени зашифровывается и превращается в идентификатор кнопки отправки. По умолчанию `None`.
+* **css\_class** (_str_) (опционально) - Дополнительные классы CSS для применения к `<input>`. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<input>`.
+
+Примеры
+
+{% hint style="info" %}
+атрибут **form** для **render()** не требуется для унаследованных объектов **BaseInput**.
+{% endhint %}
+
+```python
+>>> submit = Submit('Search the Site', 'search this site')
+>>> submit.render("", "", Context())
+'<input type="submit" name="search-the-site" value="search this site" '
+'class="btn btn-primary" id="submit-id-search-the-site"/>'
+```
+
+```python
+>>> submit = Submit('Search the Site', 'search this site', css_id="custom-id",
+                     css_class="custom class", my_attr=True, data="my-data")
+>>> submit.render("", "", Context())
+'<input type="submit" name="search-the-site" value="search this site" '
+'class="btn btn-primary custom class" id="custom-id" data="my-data" my-attr/>'
+```
+
+Обычно вы не будете вызывать метод рендеринга для объекта напрямую. Вместо этого добавьте его в свой макет вручную вручную или используйте метод **add\_input**:
+
+```python
+class ExampleForm(forms.Form):
+[...]
+def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.helper = FormHelper()
+    self.helper.add_input(Submit('submit', 'Submit'))
 ```
 
 #### Атрибуты
