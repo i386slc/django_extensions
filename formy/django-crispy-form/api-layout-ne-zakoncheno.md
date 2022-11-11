@@ -211,3 +211,101 @@ Field('field_name', style="color: #333;", css_class="whatever", id="field_name")
 
 * **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
 * **attrs** (_dict_) (опционально) - Атрибуты, применяемые к полю. Они преобразуются в атрибуты html, например, `data_id: 'test'` в словаре **attrs** станет `data-id='test'` в поле `<input>`.
+
+## _class_ layout.Fieldset(_legend_, _\*fields_, _css\_class=None_, _css\_id=None_, _template=None_, _\*\*kwargs_)
+
+Объект макета, который оборачивает поля в `<fieldset>`.
+
+#### Параметры
+
+* **legend** (_str_) - Содержимое набора полей `<legend>`. Этот текст зависит от контекста, чтобы воплотить его в жизнь, см. Раздел примеров.
+* **\*fields** (_str_) - Любое количество полей в качестве позиционных аргументов для отображения в `<fieldset>`.
+* **css\_id** (_str_) (опционально) - Пользовательский идентификатор DOM для объекта макета. Если он не указан, аргумент имени зашифровывается и превращается в идентификатор кнопки отправки. По умолчанию `None`.
+* **css\_class** (_str_) (опционально) - Дополнительные классы CSS для применения к `<input>`. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в `<fieldset>`.
+
+#### Примеры
+
+Объект Fieldset Layout добавляется к вашему макету **Layout**, например:
+
+```python
+Fieldset("Text for the legend",
+    "form_field_1",
+    "form_field_2",
+    css_id="my-fieldset-id",
+    css_class="my-fieldset-class",
+    data="my-data"
+)
+```
+
+Приведенный выше макет будет отображаться как:
+
+```html
+<fieldset id="fieldset-id" class="my-fieldset-class" data="my-data">
+   <legend>Text for the legend</legend>
+   <!-- здесь отображаются поля формы -->
+</fieldset>
+```
+
+Первый параметр — это текст легенды набора полей. Этот текст зависит от контекста, поэтому вы можете делать такие вещи, как:
+
+```python
+Fieldset("Data for {{ user.username }}",
+    'form_field_1',
+    'form_field_2'
+)
+```
+
+## _class_ layout.HTML(_html_)
+
+Объект макета **Layout**. Он может содержать чистый HTML и имеет доступ ко всему контексту страницы, на которой отображается форма.
+
+#### Примеры
+
+```python
+HTML("{% raw %}
+{% if saved %}Data saved{% endif %}
+{% endraw %}")
+HTML('<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />')
+```
+
+## _class_ layout.Hidden(_name_, _value_, _\*_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
+
+Используется для создания скрытого дескриптора ввода для тега шаблона `{% crispy %}` .
+
+#### Параметры
+
+* **name** (_str_) - Атрибут name кнопки.
+* **value** (_str_) - Атрибут value кнопки.
+* **css\_id** (_str_) (опционально) - Пользовательский идентификатор DOM для объекта макета. Если он не указан, аргумент имени зашифровывается и превращается в идентификатор кнопки отправки. По умолчанию `None`.
+* **css\_class** (_str_) (опционально) - Дополнительные классы CSS для применения к `<input>`. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<input>`.
+
+#### Примеры
+
+{% hint style="info" %}
+атрибут **form** для **render()** не требуется для унаследованных объектов **BaseInput**.
+{% endhint %}
+
+```python
+>>> hidden = Hidden("hidden", "hide-me")
+>>> hidden.render("", "", Context())
+'<input type="hidden" name="hidden" value="hide-me"/>'
+```
+
+Обычно вы не будете вызывать метод рендеринга для объекта напрямую. Вместо этого добавьте его в свой макет вручную или используйте метод **add\_input**:
+
+```python
+class ExampleForm(forms.Form):
+[...]
+def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+    self.helper = FormHelper()
+    self.helper.add_input(Hidden("hidden", "hide-me"))
+```
+
+#### Атрибуты
+
+* **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
