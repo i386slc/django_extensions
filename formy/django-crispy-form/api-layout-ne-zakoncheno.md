@@ -42,7 +42,7 @@
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 * **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<input>`.
 
-#### Примеры
+Примеры
 
 {% hint style="info" %}
 атрибут **form** для **render()** не требуется для унаследованных объектов **BaseInput**.
@@ -93,7 +93,7 @@ def __init__(self, *args, **kwargs):
 * **css\_class** (_str_) (опционально) - Дополнительные классы CSS для применения к `<input>`. По умолчанию `None`.
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 
-#### Примеры
+Примеры
 
 Пример использования **ButtonHolder** в вашем макете:
 
@@ -110,6 +110,8 @@ ButtonHolder(
 
 ## _class_ layout.Column(_\*fields_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
 
+Исходник.
+
 Объект макета. Он заключает поля в `<div>`, а шаблон добавляет соответствующий класс для отображения содержимого в столбце, например, **col-md** при использовании пакета шаблонов **Bootstrap4**.
 
 #### Параметры
@@ -120,7 +122,7 @@ ButtonHolder(
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 * **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<div>`.
 
-#### Примеры
+Примеры
 
 В своем **Layout** вы можете:
 
@@ -159,7 +161,7 @@ Div(
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 * **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<div>`.
 
-#### Примеры
+Примеры
 
 В своем **Layout** вы можете:
 
@@ -191,6 +193,8 @@ Div(
 
 ## _class_ layout.Field(_\*fields_, _css\_class=None_, _wrapper\_class=None_, _template=None_, _\*\*kwargs_)
 
+Исходник.
+
 Объект **Layout**, обычно содержащий одно имя поля, к которому можно легко добавлять атрибуты.
 
 #### Параметры
@@ -201,7 +205,7 @@ Div(
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 * **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<div>`.
 
-#### Примеры
+Примеры
 
 ```python
 Field('field_name', style="color: #333;", css_class="whatever", id="field_name")
@@ -214,6 +218,8 @@ Field('field_name', style="color: #333;", css_class="whatever", id="field_name")
 
 ## _class_ layout.Fieldset(_legend_, _\*fields_, _css\_class=None_, _css\_id=None_, _template=None_, _\*\*kwargs_)
 
+Исходник.
+
 Объект макета, который оборачивает поля в `<fieldset>`.
 
 #### Параметры
@@ -225,7 +231,7 @@ Field('field_name', style="color: #333;", css_class="whatever", id="field_name")
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 * **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в `<fieldset>`.
 
-#### Примеры
+Примеры
 
 Объект Fieldset Layout добавляется к вашему макету **Layout**, например:
 
@@ -259,9 +265,11 @@ Fieldset("Data for {{ user.username }}",
 
 ## _class_ layout.HTML(_html_)
 
+Исходник.
+
 Объект макета **Layout**. Он может содержать чистый HTML и имеет доступ ко всему контексту страницы, на которой отображается форма.
 
-#### Примеры
+Примеры
 
 ```python
 HTML("{% raw %}
@@ -271,6 +279,8 @@ HTML('<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />')
 ```
 
 ## _class_ layout.Hidden(_name_, _value_, _\*_, _css\_id=None_, _css\_class=None_, _template=None_, _\*\*kwargs_)
+
+Исходник.
 
 Используется для создания скрытого дескриптора ввода для тега шаблона `{% crispy %}` .
 
@@ -283,7 +293,7 @@ HTML('<input type="hidden" name="{{ step_field }}" value="{{ step0 }}" />')
 * **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
 * **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в файл `<input>`.
 
-#### Примеры
+Примеры
 
 {% hint style="info" %}
 атрибут **form** для **render()** не требуется для унаследованных объектов **BaseInput**.
@@ -304,6 +314,85 @@ def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.helper = FormHelper()
     self.helper.add_input(Hidden("hidden", "hide-me"))
+```
+
+#### Атрибуты
+
+* **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
+
+## _class_ layout.Layout(_\*fields_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#Layout).
+
+Макет формы. Это соответствует объектам макета: **Fieldset**, **Row**, **Column**, **MultiField**, **HTML**, **ButtonHolder**, **Button**, **Hidden**, **Reset**, **Submit** и полям. Поля формы должны быть строками. Объекты макета **Fieldset**, **Row**, **Column**, **MultiField** и **ButtonHolder** могут содержать внутри себя другие объекты макета. Хотя **ButtonHolder** должен содержать только унаследованные классы **HTML** и **BaseInput**: **Button**, **Hidden**, **Reset** и **Submit**.
+
+Пример:
+
+```python
+helper.layout = Layout(
+    Fieldset('Company data',
+        'is_company'
+    ),
+    Fieldset(_('Contact details'),
+        'email',
+        Row('password1', 'password2'),
+        'first_name',
+        'last_name',
+        HTML('<img src="/media/somepicture.jpg"/>'),
+        'company'
+    ),
+    ButtonHolder(
+        Submit('Save', 'Save', css_class='button white'),
+    ),
+)
+```
+
+## _class_ layout.MultiField(_label_, _\*fields_, _label\_class=None_, _help\_text=None_, _css\_class=None_, _css\_id=None_, _template=None_, _field\_template=None_, _\*\*kwargs_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#MultiField).
+
+Контейнер **MultiField** для **Bootstrap3**. Визуализирует в **MultiField** тег `<div>`.
+
+#### Параметры
+
+* **label** (_str_) - Метка для **MultiField**.
+* **\*fields** (_str_) - Поля, которые должны отображаться в **MultiField**.
+* **label\_class** (_str_) (опционально) - Классы CSS для добавления в метку с несколькими полями. По умолчанию `None`.
+* **help\_text** (_str_) (опционально) - Текст справки будет доступен в контексте шаблона с несколькими полями. Это не используется в предоставленном шаблоне **bootstrap3**. По умолчанию `None`.
+* **css\_id** (_str_) (опционально) - Идентификатор DOM для объекта макета, который будет добавлен в обертку `<div>`, если он предоставлен. По умолчанию `None`.
+* **css\_class** (_str_) (опционально) - Дополнительные классы CSS для применения к `<input>`. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **field\_template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+* **\*\*kwargs** (_dict_) (опционально) - Дополнительные атрибуты передаются в **flatatt** и преобразуются в пары `key=”value”`. Эти атрибуты добавляются в `<fieldset>`.
+
+#### Атрибуты
+
+* **template** (_str_) - Шаблон по умолчанию, с которым будет отображаться этот объект макета.
+* **field\_template** (_str_) - Шаблон, с которым будут отображаться поля.
+
+## _class_ layout.MultiWidgetField(_\*fields_, _attrs=None_, _template=None_, _wrapper\_class=None_)
+
+[Исходник](https://django-crispy-forms.readthedocs.io/en/latest/\_modules/layout.html#MultiWidgetField).
+
+Объект макета. Для полей с **MultiWidget** в качестве виджета вы можете передать дополнительные атрибуты каждому виджету.
+
+#### Параметры
+
+* **\*fields** (_str_) - Обычно одно поле, но может быть любое количество полей, которые должны отображаться с применением одних и тех же атрибутов.
+* **attrs** (_str_) (опционально) - Дополнительные атрибуты, которые будут добавлены к каждому виджету. Они добавляются к любым классам, включенным в словарь **attrs**. По умолчанию `None`.
+* **wrapper\_class** (_str_) (опционально) - Классы CSS, которые будут использоваться при рендеринге поля. Этот класс обычно применяется к `<div>`, который обертывает теги `<label>` и `<input>` поля. По умолчанию `None`.
+* **template** (_str_) (опционально) - Переопределяет шаблон по умолчанию, если он предоставлен. По умолчанию `None`.
+
+Пример:
+
+```python
+MultiWidgetField(
+    'multiwidget_field_name',
+    attrs=(
+        {'style': 'width: 30px;'},
+        {'class': 'second_widget_class'}
+    ),
+)
 ```
 
 #### Атрибуты
