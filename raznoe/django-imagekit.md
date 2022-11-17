@@ -314,3 +314,68 @@ admin.site.register(Photo, PhotoAdmin)
 ### Команды управления
 
 В **ImageKit** есть одна команда управления — **generateimages** — которая создает файлы кэша для всех ваших зарегистрированных генераторов изображений. Вы также можете передать ему список идентификаторов генераторов, чтобы выборочно генерировать изображения.
+
+## Сообщество
+
+Пожалуйста, используйте [систему отслеживания ошибок GitHub](https://github.com/matthewwithanm/django-imagekit/issues), чтобы сообщать об ошибках с **django-imagekit**. Также существует [список рассылки](https://groups.google.com/forum/#!forum/django-imagekit) для обсуждения проекта и вопросов, а также официальный канал [#imagekit](irc://irc.freenode.net/imagekit) на Freenode.
+
+## Содействие
+
+Мы любим содействие! И вам не нужно быть экспертом в библиотеке или даже в Django, чтобы внести свой вклад: процессоры **ImageKit** — это автономные классы, которые полностью отделены от более пугающих внутренних компонентов ORM Django. Если вы написали процессор, который, по вашему мнению, может быть полезен другим людям, откройте запрос на извлечение, чтобы мы могли его посмотреть!
+
+Вы также можете ознакомиться с нашим списком [открытых, удобных для участников вопросов](https://github.com/matthewwithanm/django-imagekit/issues?labels=contributor-friendly\&state=open) для идей.
+
+Ознакомьтесь с нашими [рекомендациями по участию](https://github.com/matthewwithanm/django-imagekit/blob/develop/CONTRIBUTING.rst), чтобы получить дополнительную информацию о том, как заявить о себе с помощью **ImageKit**.
+
+## Авторы
+
+**ImageKit** изначально был написан [Justin Driscoll](http://github.com/jdriscoll).
+
+Полевой API и другие вещи после 1.0 были написаны умными людьми из [HZDG](http://hzdg.com/).
+
+### Сопровождающие
+
+* [Matthew Tretter](http://github.com/matthewwithanm)
+* [Bryan Veloso](http://github.com/bryanveloso)
+* [Chris Drackett](http://github.com/chrisdrackett)
+* [Greg Newman](http://github.com/gregnewman)
+
+### Разработчики
+
+* [Josh Ourisman](http://github.com/joshourisman)
+* [Jonathan Slenders](http://github.com/jonathanslenders)
+* [Eric Eldredge](http://github.com/lettertwo)
+* [Chris McKenzie](http://github.com/kenzic)
+* [Markus Kaiserswerth](http://github.com/mkai)
+* [Ryan Bagwell](http://github.com/ryanbagwell)
+* [Alexander Bohn](http://github.com/fish2000)
+* [Timothée Peignier](http://github.com/cyberdelia)
+* [Madis Väin](http://github.com/madisvain)
+* [Jan Sagemüller](https://github.com/version2)
+* [Clay McClure](https://github.com/claymation)
+* [Jannis Leidel](https://github.com/jezdez)
+* [Sean Bell](https://github.com/seanbell)
+* [Saul Shanabrook](https://github.com/saulshanabrook)
+* [Venelin Stoykov](https://github.com/vstoykov)
+
+## Индексы и таблицы
+
+<mark style="color:red;">Этот раздел еще не заполнен !!!</mark>
+
+* Индексация
+* Индексация модуля
+* Страница поиска
+* Конфигурация
+  * Настройки
+* Расширенное использование
+  * Модели
+  * Исходные группы
+* Кэширование
+  * Серверный рабочий процесс по умолчанию
+  * Оптимизация
+* Обновление с 2.x
+  * Характеристики модели
+  * Серверные части кэша изображений
+  * Процессоры условной модели
+  * Условные имена файлов cache\_to
+  * Процессоры перешли на PILKit
