@@ -34,3 +34,7 @@
   * [API Layout](formy/django-crispy-form/api-layout.md)
   * [API templatetags](formy/django-crispy-form/api-templatetags.md)
   * [API Bootstrap (не закончено)](formy/django-crispy-form/api-bootstrap-ne-zakoncheno.md)
+
+## Разное
+
+* [django-imagekit](raznoe/django-imagekit.md)
