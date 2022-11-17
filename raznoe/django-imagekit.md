@@ -188,3 +188,129 @@ register.generator('myapp:thumbnail', Thumbnail)
 {% endraw %}
 <a href="{{ th.url }}">Click to download a cool {{ th.width }} x {{ th.height }} image!</a>
 ```
+
+#### thumbnail
+
+Поскольку это такой распространенный вариант использования, **ImageKit** также предоставляет тег шаблона `«thumbnail»`:
+
+```django
+{% raw %}
+{% load imagekit %}
+
+{% thumbnail '100x50' source_file %}
+{% endraw %}
+```
+
+Как и тег **generateimage**, тег **thumbnail** выводит тег `<img>`:
+
+```html
+<img src="/media/CACHE/images/982d5af84cddddfd0fbf70892b4431e4.jpg" width="100" height="50" />
+```
+
+Сравнив этот синтаксис с приведенным выше тегом **generateimage**, вы заметите несколько отличий.
+
+Во-первых, нам не нужно было указывать идентификатор генератора изображений; если не указано иное, тег **thumbnail** использует генератор, зарегистрированный с идентификатором `«imagekit:thumbnail»`. _**Важно отметить, что этот тег не использует класс спецификации Thumbnail, который мы определили ранее**_; он использует генератор, зарегистрированный с идентификатором `«imagekit:thumbnail»`, который по умолчанию является `imagekit.generatorlibrary.Thumbnail`.
+
+Во-вторых, мы передаем два позиционных аргумента (размеры и исходное изображение) в отличие от аргументов ключевого слова, которые мы использовали с тегом **generateimage**.
+
+Как и в случае с тегом **generateimage**, вы также можете указать дополнительные HTML-атрибуты для тега эскиза или использовать его в качестве тега назначения:
+
+```django
+{% raw %}
+{% load imagekit %}
+
+{% thumbnail '100x50' source_file -- alt="A picture of Me" id="mypicture" %}
+{% thumbnail '100x50' source_file as th %}
+{% endraw %}
+```
+
+### Использование спецификаций в формах
+
+В дополнение к полю модели, описанному выше, существует также версия поля формы класса **ProcessedImageField**. Функционал в принципе такой же (однократно обрабатывает изображение и сохраняет результат), но используется в классе формы:
+
+```python
+from django import forms
+from imagekit.forms import ProcessedImageField
+from imagekit.processors import ResizeToFill
+
+class ProfileForm(forms.Form):
+    avatar_thumbnail = ProcessedImageField(
+        spec_id='myapp:profile:avatar_thumbnail',
+        processors=[ResizeToFill(100, 50)],
+        format='JPEG',
+        options={'quality': 60}
+    )
+```
+
+Преимущество использования `imagekit.forms.ProcessedImageField` (в отличие от `imagekit.models.ProcessedImageField` выше) заключается в том, что он сохраняет логику создания изображения вне вашей модели (в которой вы использовали бы обычный Django **ImageField**). Вы даже можете создать несколько форм, каждая со своим собственным **ProcessedImageField**, которые сохранят свои результаты в одном и том же поле изображения.
+
+### Процессоры (processors)
+
+Пока мы видели только один процессор: `imagekit.processors.ResizeToFill`. Но **ImageKit** способен на гораздо большее, чем просто изменение размера изображений, и эта мощь исходит от его процессоров.
+
+Процессоры берут объект изображения **PIL**, что-то делают с ним и возвращают новый. Спецификация может использовать столько процессоров, сколько вам нужно, и все они будут запускаться по порядку.
+
+```python
+from imagekit import ImageSpec
+from imagekit.processors import TrimBorderColor, Adjust
+
+class MySpec(ImageSpec):
+    processors = [
+        TrimBorderColor(),
+        Adjust(contrast=1.2, sharpness=1.1),
+    ]
+    format = 'JPEG'
+    options = {'quality': 60}
+```
+
+Модуль `imagekit.processors` содержит процессоры для многих распространенных операций с изображениями, таких как изменение размера, поворот и корректировка цвета. Однако, если они не справляются с задачей, вы можете создать свой собственный. Все, что вам нужно сделать, это определить класс, реализующий метод `process()`:
+
+```python
+class Watermark(object):
+    def process(self, image):
+        # Код для добавления водяного знака находится здесь.
+        return image
+```
+
+Вот и все! Чтобы использовать свой модный новый пользовательский процессор, просто включите его в список процессоров вашей спецификации:
+
+```python
+from imagekit import ImageSpec
+from imagekit.processors import TrimBorderColor, Adjust
+from myapp.processors import Watermark
+
+class MySpec(ImageSpec):
+    processors = [
+        TrimBorderColor(),
+        Adjust(contrast=1.2, sharpness=1.1),
+        Watermark(),
+    ]
+    format = 'JPEG'
+    options = {'quality': 60}
+```
+
+{% hint style="info" %}
+Обратите внимание, что когда вы импортируете процессор из `imagekit.processors`, **imagekit**, в свою очередь, импортирует процессор из [PILKit](https://github.com/matthewwithanm/pilkit). Поэтому, если вы ищете доступные процессоры, посмотрите на PILKit.
+{% endhint %}
+
+### Админка (Admin)
+
+**ImageKit** также содержит класс с именем `imagekit.admin.AdminThumbnail` для отображения спецификаций (или даже обычных полей **ImageField**) в [списке изменений администратора Django](https://docs.djangoproject.com/en/dev/intro/tutorial02/#customize-the-admin-change-list). **AdminThumbnail** используется как свойство в классах администрирования Django:
+
+```python
+from django.contrib import admin
+from imagekit.admin import AdminThumbnail
+from .models import Photo
+
+class PhotoAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'admin_thumbnail')
+    admin_thumbnail = AdminThumbnail(image_field='thumbnail')
+
+admin.site.register(Photo, PhotoAdmin)
+```
+
+**AdminThumbnail** может даже использовать собственный шаблон. Дополнительные сведения см. в разделе `imagekit.admin.AdminThumbnail`.
+
+### Команды управления
+
+В **ImageKit** есть одна команда управления — **generateimages** — которая создает файлы кэша для всех ваших зарегистрированных генераторов изображений. Вы также можете передать ему список идентификаторов генераторов, чтобы выборочно генерировать изображения.
