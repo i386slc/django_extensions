@@ -37,6 +37,7 @@
 * [django-betterforms](formy/django-betterforms/README.md)
   * [Введение в django-betterforms](formy/django-betterforms/vvedenie-v-django-betterforms.md)
   * [Формы django-betterforms](formy/django-betterforms/formy-django-betterforms.md)
+  * [Формы списка изменений](formy/django-betterforms/formy-spiska-izmenenii.md)
 
 ## Разное
 
