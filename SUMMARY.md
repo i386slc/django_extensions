@@ -34,6 +34,8 @@
   * [API Layout](formy/django-crispy-form/api-layout.md)
   * [API templatetags](formy/django-crispy-form/api-templatetags.md)
   * [API Bootstrap (не закончено)](formy/django-crispy-form/api-bootstrap-ne-zakoncheno.md)
+* [django-betterforms](formy/django-betterforms/README.md)
+  * [Введение в django-betterforms](formy/django-betterforms/vvedenie-v-django-betterforms.md)
 
 ## Разное
 
