@@ -38,6 +38,7 @@
   * [Введение в django-betterforms](formy/django-betterforms/vvedenie-v-django-betterforms.md)
   * [Формы django-betterforms](formy/django-betterforms/formy-django-betterforms.md)
   * [Формы списка изменений](formy/django-betterforms/formy-spiska-izmenenii.md)
+  * [MultiForm и MultiModelForm](formy/django-betterforms/multiform-i-multimodelform.md)
 
 ## Разное
 
