@@ -43,3 +43,11 @@
 ## Разное
 
 * [django-imagekit](raznoe/django-imagekit.md)
+
+## DRF
+
+* [Django REST framework](drf/django-rest-framework/README.md)
+  * [Быстрый старт](drf/django-rest-framework/bystryi-start.md)
+  * [Навигация по API](drf/django-rest-framework/navigaciya-po-api/README.md)
+    * [Запросы](drf/django-rest-framework/navigaciya-po-api/zaprosy.md)
+    * [Фильтрация](drf/django-rest-framework/navigaciya-po-api/filtraciya.md)
