@@ -51,3 +51,7 @@
   * [Навигация по API](drf/django-rest-framework/navigaciya-po-api/README.md)
     * [Запросы](drf/django-rest-framework/navigaciya-po-api/zaprosy.md)
     * [Фильтрация](drf/django-rest-framework/navigaciya-po-api/filtraciya.md)
+
+## Интернационализация
+
+* [django-parler](internacionalizaciya/django-parler.md)
