@@ -70,4 +70,6 @@
     * [Интеграция с django-rest-framework](internacionalizaciya/django-parler/uglublennye-temy-django-parler/integraciya-s-django-rest-framework.md)
     * [Поддержка нескольких сайтов](internacionalizaciya/django-parler/uglublennye-temy-django-parler/podderzhka-neskolkikh-saitov.md)
     * [Отключение кэширования](internacionalizaciya/django-parler/uglublennye-temy-django-parler/otklyuchenie-keshirovaniya.md)
+    * [Построение модели переводов вручную](internacionalizaciya/django-parler/uglublennye-temy-django-parler/postroenie-modeli-perevodov-vruchnuyu.md)
+    * [Настройка языковых параметров](internacionalizaciya/django-parler/uglublennye-temy-django-parler/nastroika-yazykovykh-parametrov.md)
   * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
