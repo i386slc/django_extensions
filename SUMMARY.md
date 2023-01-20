@@ -57,4 +57,7 @@
 * [django-parler](internacionalizaciya/django-parler/README.md)
   * [Краткий учебник django-parler](internacionalizaciya/django-parler/kratkii-uchebnik-django-parler.md)
   * [Варианты конфигурации django-parler](internacionalizaciya/django-parler/varianty-konfiguracii-django-parler.md)
+  * [Теги шаблона django-parler](internacionalizaciya/django-parler/tegi-shablona-django-parler.md)
+  * [Рекомендации по производительности django-parler](internacionalizaciya/django-parler/rekomendacii-po-proizvoditelnosti-django-parler.md)
+  * [Углубленные темы django-parler](internacionalizaciya/django-parler/uglublennye-temy-django-parler.md)
   * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
