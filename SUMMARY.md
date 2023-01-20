@@ -54,4 +54,6 @@
 
 ## Интернационализация
 
-* [django-parler](internacionalizaciya/django-parler.md)
+* [django-parler](internacionalizaciya/django-parler/README.md)
+  * [Краткий учебник django-parler](internacionalizaciya/django-parler/kratkii-uchebnik-django-parler.md)
+  * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
