@@ -61,4 +61,6 @@
   * [Рекомендации по производительности django-parler](internacionalizaciya/django-parler/rekomendacii-po-proizvoditelnosti-django-parler.md)
   * [Углубленные темы django-parler](internacionalizaciya/django-parler/uglublennye-temy-django-parler/README.md)
     * [Переводы без резервных языков](internacionalizaciya/django-parler/uglublennye-temy-django-parler/perevody-bez-rezervnykh-yazykov.md)
+    * [Использование переведенных слагов в представлениях](internacionalizaciya/django-parler/uglublennye-temy-django-parler/ispolzovanie-perevedennykh-slagov-v-predstavleniyakh.md)
+    * [Делаем существующие поля переводимыми](internacionalizaciya/django-parler/uglublennye-temy-django-parler/delaem-sushestvuyushie-polya-perevodimymi.md)
   * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
