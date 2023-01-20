@@ -63,4 +63,6 @@
     * [Переводы без резервных языков](internacionalizaciya/django-parler/uglublennye-temy-django-parler/perevody-bez-rezervnykh-yazykov.md)
     * [Использование переведенных слагов в представлениях](internacionalizaciya/django-parler/uglublennye-temy-django-parler/ispolzovanie-perevedennykh-slagov-v-predstavleniyakh.md)
     * [Делаем существующие поля переводимыми](internacionalizaciya/django-parler/uglublennye-temy-django-parler/delaem-sushestvuyushie-polya-perevodimymi.md)
+    * [Добавление переведенных полей в существующую модель](internacionalizaciya/django-parler/uglublennye-temy-django-parler/dobavlenie-perevedennykh-polei-v-sushestvuyushuyu-model.md)
+    * [Интеграция с django-mptt](internacionalizaciya/django-parler/uglublennye-temy-django-parler/integraciya-s-django-mptt.md)
   * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
