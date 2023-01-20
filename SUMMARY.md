@@ -59,5 +59,6 @@
   * [Варианты конфигурации django-parler](internacionalizaciya/django-parler/varianty-konfiguracii-django-parler.md)
   * [Теги шаблона django-parler](internacionalizaciya/django-parler/tegi-shablona-django-parler.md)
   * [Рекомендации по производительности django-parler](internacionalizaciya/django-parler/rekomendacii-po-proizvoditelnosti-django-parler.md)
-  * [Углубленные темы django-parler](internacionalizaciya/django-parler/uglublennye-temy-django-parler.md)
+  * [Углубленные темы django-parler](internacionalizaciya/django-parler/uglublennye-temy-django-parler/README.md)
+    * [Переводы без резервных языков](internacionalizaciya/django-parler/uglublennye-temy-django-parler/perevody-bez-rezervnykh-yazykov.md)
   * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
