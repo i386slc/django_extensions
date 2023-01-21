@@ -73,3 +73,4 @@
     * [Построение модели переводов вручную](internacionalizaciya/django-parler/uglublennye-temy-django-parler/postroenie-modeli-perevodov-vruchnuyu.md)
     * [Настройка языковых параметров](internacionalizaciya/django-parler/uglublennye-temy-django-parler/nastroika-yazykovykh-parametrov.md)
   * [Совместимость с Django](internacionalizaciya/django-parler/sovmestimost-s-django.md)
+  * [Происхождение django-parler](internacionalizaciya/django-parler/proiskhozhdenie-django-parler.md)
