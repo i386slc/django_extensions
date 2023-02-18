@@ -39,6 +39,13 @@
   * [Формы django-betterforms](formy/django-betterforms/formy-django-betterforms.md)
   * [Формы списка изменений](formy/django-betterforms/formy-spiska-izmenenii.md)
   * [MultiForm и MultiModelForm](formy/django-betterforms/multiform-i-multimodelform.md)
+* [django-bootstrap-datepicker-plus](formy/django-bootstrap-datepicker-plus/README.md)
+  * [Приступаем к работе](formy/django-bootstrap-datepicker-plus/pristupaem-k-rabote.md)
+  * [Краткое руководство](formy/django-bootstrap-datepicker-plus/kratkoe-rukovodstvo.md)
+  * [Использование](formy/django-bootstrap-datepicker-plus/ispolzovanie.md)
+  * [Настройка](formy/django-bootstrap-datepicker-plus/nastroika.md)
+  * [Настройка шаблона](formy/django-bootstrap-datepicker-plus/nastroika-shablona.md)
+  * [Поиск ошибок](formy/django-bootstrap-datepicker-plus/poisk-oshibok.md)
 
 ## Разное
 
