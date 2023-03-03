@@ -47,6 +47,7 @@
   * [Настройка шаблона](formy/django-bootstrap-datepicker-plus/nastroika-shablona.md)
   * [Поиск ошибок](formy/django-bootstrap-datepicker-plus/poisk-oshibok.md)
   * [Пример BOOTSTRAP\_DATEPICKER\_PLUS](formy/django-bootstrap-datepicker-plus/primer-bootstrap\_datepicker\_plus.md)
+  * [Bootstrap 3 Datepicker v4 (options)](formy/django-bootstrap-datepicker-plus/bootstrap-3-datepicker-v4-options.md)
 
 ## Разное
 

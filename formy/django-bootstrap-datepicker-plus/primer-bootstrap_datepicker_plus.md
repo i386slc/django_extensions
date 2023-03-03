@@ -4,7 +4,7 @@
 
 Это пример разработчиков из Github:
 
-````python
+```python
 BOOTSTRAP_DATEPICKER_PLUS = {
     # Параметры для ВСЕХ объявленных виджетов ввода
     # Больше параметров: https://getdatepicker.com/4/Options/
@@ -67,4 +67,3 @@ BOOTSTRAP_DATEPICKER_PLUS = {
     # "app_static_url": "bootstrap_datepicker_plus/",
 }
 ```
-````
