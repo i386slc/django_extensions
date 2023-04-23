@@ -60,7 +60,18 @@
   * [Навигация по API](drf/django-rest-framework/navigaciya-po-api/README.md)
     * [Запросы](drf/django-rest-framework/navigaciya-po-api/zaprosy.md)
     * [Фильтрация](drf/django-rest-framework/navigaciya-po-api/filtraciya.md)
-* [django-filter](drf/django-filter.md)
+* [django-filter](drf/django-filter/README.md)
+  * [Установка django-filter](drf/django-filter/ustanovka-django-filter.md)
+  * [Приступая к работе (django-filter)](drf/django-filter/pristupaya-k-rabote-django-filter.md)
+  * [Интеграция с DRF](drf/django-filter/integraciya-s-drf.md)
+  * [Советы и решения с django-filter](drf/django-filter/sovety-i-resheniya-s-django-filter.md)
+  * [Руководство по миграциям](drf/django-filter/rukovodstvo-po-migraciyam.md)
+  * [Параметры набора фильтров](drf/django-filter/parametry-nabora-filtrov.md)
+  * [Справочник по фильтрам](drf/django-filter/spravochnik-po-filtram.md)
+  * [Справочник по полям](drf/django-filter/spravochnik-po-polyam.md)
+  * [Справочник по виджетам](drf/django-filter/spravochnik-po-vidzhetam.md)
+  * [Справочник по настройкам](drf/django-filter/spravochnik-po-nastroikam.md)
+  * [Запуск набора тестов](drf/django-filter/zapusk-nabora-testov.md)
 
 ## Интернационализация
 
