@@ -60,6 +60,7 @@
   * [Навигация по API](drf/django-rest-framework/navigaciya-po-api/README.md)
     * [Запросы](drf/django-rest-framework/navigaciya-po-api/zaprosy.md)
     * [Фильтрация](drf/django-rest-framework/navigaciya-po-api/filtraciya.md)
+* [django-filter](drf/django-filter.md)
 
 ## Интернационализация
 
