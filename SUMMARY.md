@@ -52,6 +52,8 @@
 ## Разное
 
 * [django-imagekit](raznoe/django-imagekit.md)
+* [django-charts-dashboard](raznoe/django-charts-dashboard/README.md)
+  * [Обзор django-charts-dashboard](raznoe/django-charts-dashboard/obzor-django-charts-dashboard.md)
 
 ## DRF
 
