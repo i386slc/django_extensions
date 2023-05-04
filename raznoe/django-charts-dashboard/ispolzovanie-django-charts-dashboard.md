@@ -372,3 +372,101 @@ class ExampleView(TemplateView):
 ### GroupChart
 
 Тот же метод, что и на графике выше, с той лишь разницей, что метод **create\_node** имеет параметр цвета.
+
+## Переопределить всплывающие подсказки
+
+Вы можете переопределить всплывающие подсказки в диаграммах, просто определите только **chart.tooltips** со списком всплывающих подсказок itens.
+
+график как объект
+
+**views.py**
+
+```python
+class ExampleView(TemplateView):
+
+    template_name = "core/example.html"
+
+    def my_method(self):
+        barchart = BarChart()
+        barchart.title = "Example charts title"
+        barchart.tooltips = ["tooltip 1","tooltip 2","tooltip 3"]
+
+        ...
+```
+
+или диаграмма как вид:
+
+**views.py**
+
+```python
+from django.views.generic.base import TemplateView
+from charts.views import BarChartView
+
+class ExampleChart(BarChartView, TemplateView):
+    ...
+    title = "Index of ..."
+
+    def generate_labels(self):
+        return ["Africa","Brazil","Japan","EUA"]
+
+    def generate_values(self):
+        return [1,10,15,8]
+
+    def get_tooltips(self):
+        return ["tooltip 1","tooltip 2","tooltip 3"]
+```
+
+И ваш шаблон использует это:
+
+```javascript
+$(function(){
+
+    var dataset = JSON.parse('{{ chart|safe }}');
+    var tooltips = {{ tooltips|safe }};
+
+    callback = {
+        callbacks: {
+            label: function(tooltipItem,data) {
+                var dataset = data.datasets[tooltipItem.datasetIndex];
+                return tooltips[tooltipItem.index] + dataset.data[tooltipItem.index];
+            }
+        }
+    }
+
+    dataset.options.tooltips = Object.assign(callback);
+
+    $(function(){
+        new Chart(document.getElementById("chart_view"), dataset);
+    });
+});
+```
+
+## Переопределение yAxes в BarCharts
+
+Вы можете переопределить **yAxes** для отображения значений в процентах, просто добавьте дополнительные параметры шкалы:
+
+PS: вам нужно преобразовать значение в процентное значение в представлениях django или в функции обратного вызова в javascript.
+
+```javascript
+$(function(){
+
+    var dataset = JSON.parse('{{ chart|safe }}');
+
+    scales = {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true,
+                min: 0,
+                max: this.max,
+                callback: function (value) {
+                    return value + '%';
+                },
+            }
+        }]
+    }
+    // добавляем дополнительный параметр в контекстные параметры
+    dataset.options.scales = Object.assign(scales);
+
+    new Chart(document.getElementById("mychart"), dataset);
+});
+```
