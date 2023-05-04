@@ -55,6 +55,7 @@
 * [django-charts-dashboard](raznoe/django-charts-dashboard/README.md)
   * [Обзор django-charts-dashboard](raznoe/django-charts-dashboard/obzor-django-charts-dashboard.md)
   * [Установка django-charts-dashboard](raznoe/django-charts-dashboard/ustanovka-django-charts-dashboard.md)
+  * [Использование django-charts-dashboard](raznoe/django-charts-dashboard/ispolzovanie-django-charts-dashboard.md)
 
 ## DRF
 
