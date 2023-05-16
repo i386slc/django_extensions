@@ -81,6 +81,7 @@
   * [Настройки drf-se](drf/drf-standardized-errors/nastroiki-drf-se.md)
   * [Формат ответа об ошибке drf-se](drf/drf-standardized-errors/format-otveta-ob-oshibke-drf-se.md)
   * [Кастомизация drf-se](drf/drf-standardized-errors/kastomizaciya-drf-se.md)
+  * [Поиск ошибок drf-se](drf/drf-standardized-errors/poisk-oshibok-drf-se.md)
 
 ## Интернационализация
 
