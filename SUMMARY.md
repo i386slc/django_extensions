@@ -79,6 +79,7 @@
 * [drf-standardized-errors](drf/drf-standardized-errors/README.md)
   * [Быстрый старт drf-se](drf/drf-standardized-errors/bystryi-start-drf-se.md)
   * [Настройки drf-se](drf/drf-standardized-errors/nastroiki-drf-se.md)
+  * [Формат ответа об ошибке drf-se](drf/drf-standardized-errors/format-otveta-ob-oshibke-drf-se.md)
 
 ## Интернационализация
 
