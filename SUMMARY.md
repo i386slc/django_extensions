@@ -78,6 +78,7 @@
   * [Запуск набора тестов](drf/django-filter/zapusk-nabora-testov.md)
 * [drf-standardized-errors](drf/drf-standardized-errors/README.md)
   * [Быстрый старт drf-se](drf/drf-standardized-errors/bystryi-start-drf-se.md)
+  * [Настройки drf-se](drf/drf-standardized-errors/nastroiki-drf-se.md)
 
 ## Интернационализация
 
