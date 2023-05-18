@@ -306,3 +306,303 @@ ip = IPTest.objects.get(ipv6__contains='4.5')
 ip.ipv4, ip.ipv6, ip.ip
 # ('2.3.4.5', '::ffff:203:405', '2.3.4.5')
 ```
+
+### Array
+
+Путь импорта поля: `clickhouse_backend.models.ArrayField`
+
+Ни **Nullable**, ни **LowCardinality** не поддерживаются.
+
+При использовании **ArrayField** требуется позиционный параметр **base\_field**. Базовым полем может быть любой экземпляр поля модели, включая **ArrayField**, **TupleField** и **MapField**.
+
+Можно указать необязательный параметр **size**, чтобы ограничить длину значения массива.
+
+#### lookups
+
+```python
+from clickhouse_backend import models
+
+class NestedArrayModel(models.ClickhouseModel):
+    array = models.ArrayField(
+        base_field=models.ArrayField(
+            base_field=models.ArrayField(
+                models.UInt32Field()
+            )
+        )
+    )
+
+NestedArrayModel.objects.create(
+    array=[
+        [[12, 13, 0, 1], [12]],
+        [[12, 13, 0, 1], [12], [13, 14]]
+    ]
+)
+```
+
+#### contains
+
+Contains проверяет, является ли один массив подмножеством другого.
+
+```python
+NestedArrayModel.objects.filter(array__contains=[[[12, 13, 0, 1], [12]]]).exists()
+# True
+```
+
+#### contained\_by
+
+Contained\_by - обратный поиск contains
+
+```python
+NestedArrayModel.objects.filter(array__contained_by=[
+    [[12, 13, 0, 1], [12]],
+    [[12, 13, 0, 1], [12], [13, 14]],
+    [[1]]
+]).exists()
+# True
+```
+
+#### exact
+
+Также поддерживается точный поиск.
+
+```python
+NestedArrayModel.objects.filter(
+    array=[
+        [[12, 13, 0, 1], [12]],
+        [[12, 13, 0, 1], [12], [13, 14]]
+    ]
+).exists()
+# True
+```
+
+#### overlap
+
+Overlap проверяет, пересекаются ли два массива по некоторым элементам.
+
+```python
+NestedArrayModel.objects.filter(array__overlap=[
+    [[12, 13, 0, 1], [12]],
+    [[1]]
+]).exists()
+# True
+```
+
+#### any
+
+Any проверяет, есть ли в одном массиве определенный элемент.
+
+```python
+NestedArrayModel.objects.filter(array__any=[[12, 13, 0, 1], [12]]).exists()
+# True
+```
+
+#### len
+
+Возвращает количество элементов в массиве.
+
+```python
+NestedArrayModel.objects.filter(array__len=2).exists()
+# True
+```
+
+#### index
+
+Возвращает элемент по индексу.
+
+```python
+NestedArrayModel.objects.filter(array__1=[[12, 13, 0, 1], [12], [13, 14]]).exists()
+# True
+NestedArrayModel.objects.filter(array__1__2=[13, 14]).exists()
+# True
+NestedArrayModel.objects.filter(array__1__2__0=13).exists()
+# True
+```
+
+#### slice
+
+Возвращает элементы по диапазону.
+
+```python
+NestedArrayModel.objects.filter(array__1_2=[[[12, 13, 0, 1], [12], [13, 14]]]).exists()
+# True
+NestedArrayModel.objects.filter(array__1__0__0_2=[12, 13]).exists()
+# True
+```
+
+### Tuple
+
+Путь импорта поля: `clickhouse_backend.models.TupleField`
+
+Ни **Nullable**, ни **LowCardinality** не поддерживаются.
+
+Позиционный параметр **base\_fields** требуется при использовании **TupleField**. **base\_fields** должен быть итерируемым, содержащим только (не оба) экземпляры поля или кортежи `(имя поля, экземпляр поля)`, а имя поля должно быть допустимым идентификатором Python.
+
+Базовым полем может быть любой экземпляр поля модели, включая **ArrayField**, **TupleField** и **MapField**.
+
+При запросе из базы данных **TupleFile** получает кортеж или именованный кортеж.
+
+Пример использования:
+
+```python
+from clickhouse_backend import models
+
+class TupleModel(models.ClickhouseModel):
+    tuple = models.TupleField(
+        base_fields=[
+            models.Int8Field(),
+            models.StringField(),
+            models.GenericIPAddressField(unpack_ipv4=True)
+        ]
+    )
+
+
+class NamedTupleModel(models.ClickhouseModel):
+    tuple = models.TupleField(base_fields=[
+        ("int", models.Int8Field()),
+        ("str", models.StringField()),
+        ("ip", models.GenericIPAddressField(unpack_ipv4=True))
+    ])
+
+v = [100, "test", "::ffff:3.4.5.6"]
+TupleModel.objects.create(tuple=v)
+NamedTupleModel.objects.create(tuple=v)
+
+TupleModel.objects.get().tuple
+# (100, 'test', '3.4.5.6')
+NamedTupleModel.objects.get().tuple
+# Tuple(int=100, str='test', ip='3.4.5.6')
+
+# index lookup
+TupleModel.objects.filter(tuple__1="test").exists()
+# True
+NamedTupleModel.objects.filter(tuple__str="test").exists()
+# True
+NamedTupleModel.objects.filter(tuple__ip__startswith="3.4").exists()
+# True
+```
+
+### Map
+
+Путь импорта поля: `clickhouse_backend.models.MapField`
+
+Ни **Nullable**, ни **LowCardinality** не поддерживаются.
+
+Позиционные параметры **key\_fields** и **value\_field** обязательны при использовании **MapField**.
+
+Поле значения может быть любым экземпляром поля модели, включая **ArrayField**, **TupleField** и **MapField**.
+
+Допустимые ключевые поля:
+
+* Int8Field
+* Int16Field
+* Int32Field
+* Int64Field
+* Int128Field
+* Int256Field
+* UInt8Field
+* UInt16Field
+* UInt32Field
+* UInt64Field
+* UInt128Field
+* UInt256Field
+* BooleanField
+* StringField
+* FixedStringField
+* UUIDField
+* DateField
+* Date32Field
+* DateTimeField
+* DateTime64Field
+* EnumField
+* Enum8Field
+* Enum16Field
+* IPv4Field
+* IPv6Field
+* GenericIPAddressField
+
+При запросе из базы данных **MapFile** получает **dict**.
+
+#### lookups
+
+```python
+from clickhouse_backend import models
+
+class MapModel(models.ClickhouseModel):
+    map = models.MapField(
+        models.StringField(low_cardinality=True),
+        models.GenericIPAddressField(unpack_ipv4=True)
+    )
+
+MapModel.objects.create(
+    map={
+          "baidu": "39.156.66.10",
+          "bing.com": "13.107.21.200",
+          "google.com": "172.217.163.46"
+      }
+)
+```
+
+#### has\_key
+
+Проверьте, содержит ли значение map ключ.
+
+```python
+MapModel.objects.filter(map__has_key="baidu").exists()
+# True
+```
+
+#### len
+
+Возвращает количество элементов map.
+
+```python
+MapModel.objects.values('map__len')
+# <QuerySet [{'map__len': 3}]>
+```
+
+#### keys
+
+Возвращает ключи map.
+
+```python
+MapModel.objects.values('map__keys')
+# <QuerySet [{'map__keys': ['baidu', 'bing.com', 'google.com']}]>
+```
+
+#### values
+
+Возвращает значения map.
+
+```python
+MapModel.objects.values('map__values')
+# <QuerySet [{'map__values': ['39.156.66.10', '13.107.21.200', '172.217.163.46']}]>
+```
+
+#### key
+
+Получить значение конкретного ключа.
+
+```python
+MapModel.objects.values('map__baidu')
+# <QuerySet [{'map__baidu': '39.156.66.10'}]>
+
+# Если ключ map конфликтует с другими именами поиска или если ключ map
+# содержит пробелы или знаки препинания.
+# Можно использовать явное преобразование.
+from clickhouse_backend import models
+from clickhouse_backend.models.fields.map import KeyTransform
+
+MapModel.objects.annotate(
+    value=KeyTransform(
+        "len", models.StringField(), models.GenericIPAddressField(), "map"
+    )
+).values('value')
+# здесь возвращает пустое значение IPv6 по умолчанию
+# <QuerySet [{'value': '::'}]>
+MapModel.objects.annotate(
+    value=KeyTransform(
+        "bing.com", models.StringField(), models.GenericIPAddressField(), "map"
+    )
+).values('value')
+# <QuerySet [{'value': '::ffff:d6b:15c8'}]>
+```
