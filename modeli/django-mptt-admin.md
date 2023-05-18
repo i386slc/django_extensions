@@ -124,7 +124,8 @@ class CountryAdmin(DjangoMpttAdmin):
           return '%s %s' % (self.pk, self.title)
 
 class MyMpttModelAdminClass(MPTTModelAdmin):
-    item_label_field_name = 'title_for_admin'</code></pre>
+    item_label_field_name = 'title_for_admin'
+</code></pre>
 
 ## Фильтры
 
