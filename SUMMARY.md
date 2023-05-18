@@ -20,6 +20,7 @@
 * [django-clickhouse-backend](modeli-i-bd/django-clickhouse-backend/README.md)
   * [Настройки конфигурации](modeli-i-bd/django-clickhouse-backend/nastroiki-konfiguracii.md)
   * [Миграции](modeli-i-bd/django-clickhouse-backend/migracii.md)
+  * [Поля](modeli-i-bd/django-clickhouse-backend/polya.md)
 
 ## Формы
 
