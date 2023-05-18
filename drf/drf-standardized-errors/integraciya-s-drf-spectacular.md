@@ -179,8 +179,296 @@ REST_FRAMEWORK = {
 
 ### Пользовательский код состояния
 
+Это идет рука об руку с [обработкой исключений, отличных от DRF](https://drf-standardized-errors.readthedocs.io/en/latest/customization.html#handle-a-non-drf-exception). Итак, давайте предположим, что вы определили пользовательское исключение, которое может быть вызвано в любой операции:
+
+```python
+from rest_framework.exceptions import APIException
+
+class ServiceUnavailable(APIException):
+    status_code = 503
+    default_detail = 'Service temporarily unavailable, try again later.'
+    default_code = 'service_unavailable'
+```
+
+Затем вам нужно будет добавить соответствующий код состояния в настройки и определить класс сериализатора, который представляет возвращаемый ответ.
+
+```python
+# serializers.py
+from django.db import models
+from rest_framework import serializers
+from drf_standardized_errors.openapi_serializers import ServerErrorEnum
+
+class ErrorCode503Enum(models.TextChoices):
+    SERVICE_UNAVAILABLE = "service_unavailable"
+
+class Error503Serializer(serializers.Serializer):
+    code = serializers.ChoiceField(choices=ErrorCode503Enum.choices)
+    detail = serializers.CharField()
+    attr = serializers.CharField(allow_null=True)
+
+class ErrorResponse503Serializer(serializers.Serializer):
+    type = serializers.ChoiceField(choices=ServerErrorEnum.choices)
+    errors = Error503Serializer(many=True)
+```
+
+```python
+# settings.py
+DRF_STANDARDIZED_ERRORS = {
+    "ALLOWED_ERROR_STATUS_CODES": ["400", "403", "404", "429", "503"],
+    "ERROR_SCHEMAS": {"503": "path.to.ErrorResponse503Serializer"}
+}
+SPECTACULAR_SETTINGS = {
+    # другие настройки
+    "ENUM_NAME_OVERRIDES": {
+        # чтобы избежать предупреждений, выдаваемых drf-spectacular,
+        # добавьте следующую строку
+        "ErrorCode503Enum": "path.to.ErrorCode503Enum.values",
+    },
+}
+```
+
+Если код состояния появляется только в определенных операциях, вы можете создать свою собственную **AutoSchema**, которая наследуется от схемы, предоставленной этим пакетом, а затем переопределить `AutoSchema._should_add_error_response`, чтобы определить критерии, управляющие добавлением ответа об ошибке в операцию. Например, добавление ответа **503** только в том случае, если метод операции — **GET**, выглядит так:
+
+```python
+from drf_standardized_errors.openapi import AutoSchema
+
+class CustomAutoSchema(AutoSchema):
+    def _should_add_error_response(self, responses: dict, status_code: str) -> bool:
+        if status_code == "503":
+            return self.method == "GET"
+        else:
+            return super()._should_add_error_response(responses, status_code)
+```
+
+Не забудьте обновить **DEFAULT\_SCHEMA\_CLASS**, чтобы в этом случае он указывал на **CustomAutoSchema**.
+
+```python
+REST_FRAMEWORK = {
+    # другие настройки
+    "DEFAULT_SCHEMA_CLASS": "path.to.CustomAutoSchema"
+}
+```
+
 ### Пользовательский формат ошибки
+
+Эта запись охватывает изменения, необходимые, если вы измените формат ответа об ошибке по умолчанию. Основная идея заключается в том, что вам необходимо предоставить сериализаторы, описывающие каждый код состояния ошибки в **ALLOWED\_ERROR\_STATUS\_CODES**. Кроме того, вы должны предоставить примеры для каждого кода состояния или убедиться, что примеры по умолчанию не отображаются.
+
+Давайте продолжим с примера в разделе «[Кастомизация](kastomizaciya-drf-se.md)» об [изменении формата ответа об ошибке](kastomizaciya-drf-se.md#izmenit-format-otveta-ob-oshibke). Стандартный ответ на ошибку выглядит следующим образом:
+
+```json
+{
+    "type": "string",
+    "code": "string",
+    "message": "string",
+    "field_name": "string"
+}
+```
+
+Теперь предположим, что вам нужен точный ответ об ошибке на основе кода состояния. Это означает, что вы хотите, чтобы схема показывала, какие конкретные типы, коды и имена полей следует ожидать на основе кода состояния. Кроме того, чтобы пример не стал слишком длинным, для **ALLOWED\_ERROR\_STATUS\_CODES** будет установлено только значение `["400", "403", "404"]`. Это потому, что работа для других кодов состояния будет аналогична **403** и **404**. Однако генерация ответа об ошибке для **400** сложна по сравнению с другими, и поэтому он в списке.
+
+Начнем с простых (**403** и **404**):
+
+```python
+from drf_standardized_errors.openapi_serializers import (
+    ClientErrorEnum, ErrorCode403Enum, ErrorCode404Enum
+)
+from rest_framework import serializers
+
+
+class ErrorResponse403Serializer(serializers.Serializer):
+    type = serializers.ChoiceField(choices=ClientErrorEnum.choices)
+    code = serializers.ChoiceField(choices=ErrorCode403Enum.choices)
+    message = serializers.CharField()
+    field_name = serializers.CharField(allow_null=True)
+
+
+class ErrorResponse404Serializer(serializers.Serializer):
+    type = serializers.ChoiceField(choices=ClientErrorEnum.choices)
+    code = serializers.ChoiceField(choices=ErrorCode404Enum.choices)
+    message = serializers.CharField()
+    field_name = serializers.CharField(allow_null=True)
+```
+
+Далее обновим настройки
+
+```python
+DRF_STANDARDIZED_ERRORS = {
+    "ALLOWED_ERROR_STATUS_CODES": ["400", "403", "404"],
+    "ERROR_SCHEMAS": {
+        "403": "path.to.ErrorResponse403Serializer",
+        "404": "path.to.ErrorResponse404Serializer",
+    }
+}
+```
+
+Теперь давайте перейдем к **400**. Этот код состояния представляет ошибки синтаксического анализа, а также ошибки проверки, а ошибки проверки являются динамическими на основе сериализатора в соответствующей операции. Итак, нам нужно создать собственный класс **AutoSchema**, который возвращает правильный сериализатор ответа на ошибку на основе операции.
+
+```python
+from drf_spectacular.utils import PolymorphicProxySerializer
+from drf_standardized_errors.openapi_serializers import (
+    ClientErrorEnum, ParseErrorCodeEnum, ValidationErrorEnum
+)
+from drf_standardized_errors.openapi import AutoSchema
+from drf_standardized_errors.settings import package_settings
+from inflection import camelize
+from rest_framework import serializers
+
+
+class ParseErrorResponseSerializer(serializers.Serializer):
+    type = serializers.ChoiceField(choices=ClientErrorEnum.choices)
+    code = serializers.ChoiceField(choices=ParseErrorCodeEnum.choices)
+    message = serializers.CharField()
+    field_name = serializers.CharField(allow_null=True)
+
+
+class CustomAutoSchema(AutoSchema):
+    def _get_http400_serializer(self):
+        operation_id = self.get_operation_id()
+        component_name = f"{camelize(operation_id)}ErrorResponse400"
+
+        http400_serializers = []
+        if self._should_add_validation_error_response():
+            fields_with_error_codes = self._determine_fields_with_error_codes()
+            error_serializers = [
+                get_serializer_for_validation_error_response(
+                    operation_id, field.name, field.error_codes
+                )
+                for field in fields_with_error_codes
+            ]
+            http400_serializers.extend(error_serializers)
+        if self._should_add_parse_error_response():
+            http400_serializers.append(ParseErrorResponseSerializer)
+
+        return PolymorphicProxySerializer(
+            component_name=component_name,
+            serializers=http400_serializers,
+            resource_type_field_name="field_name",
+        )
+
+
+def get_serializer_for_validation_error_response(operation_id, field, error_codes):
+    field_choices = [(field, field)]
+    error_code_choices = sorted(zip(error_codes, error_codes))
+
+    camelcase_operation_id = camelize(operation_id)
+    attr_with_underscores = field.replace(package_settings.NESTED_FIELD_SEPARATOR, "_")
+    camelcase_attr = camelize(attr_with_underscores)
+    suffix = package_settings.ERROR_COMPONENT_NAME_SUFFIX
+    component_name = f"{camelcase_operation_id}{camelcase_attr}{suffix}"
+
+    class ValidationErrorSerializer(serializers.Serializer):
+        type = serializers.ChoiceField(choices=ValidationErrorEnum.choices)
+        code = serializers.ChoiceField(choices=error_code_choices)
+        message = serializers.CharField()
+        field_name = serializers.ChoiceField(choices=field_choices)
+
+        class Meta:
+            ref_name = component_name
+
+    return ValidationErrorSerializer
+```
+
+Остается удалить примеры по умолчанию из класса **AutoSchema** или создать новые, которые соответствуют новому выводу ответа об ошибке. Удалить примеры по умолчанию легко, и это можно сделать, переопределив **get\_examples** и вернув пустой список, который оставляет генерацию примеров на уровне используемого пользовательского интерфейса **OpenAPI** (**swagger UI**, **redoc** и т. д.). Но если вы разборчивы в примерах и хотите показать, что атрибут **field\_name** всегда имеет значение **null** для ошибок, отличных от ошибок проверки, вы можете предоставить примеры. Поэтому приступим к созданию новых примеров для **403** и **404**.
+
+```python
+from drf_standardized_errors.openapi import AutoSchema
+from rest_framework import exceptions
+from drf_spectacular.utils import OpenApiExample
+
+
+class CustomAutoSchema(AutoSchema):
+    def get_examples(self):
+        errors = [exceptions.PermissionDenied(), exceptions.NotFound()]
+        return [get_example_from_exception(error) for error in errors]
+
+def get_example_from_exception(exc: exceptions.APIException):
+    return OpenApiExample(
+        exc.__class__.__name__,
+        value={
+            "type": "client_error",
+            "code": exc.get_codes(),
+            "message": exc.detail,
+            "field_name": None,
+        },
+        response_only=True,
+        status_codes=[str(exc.status_code)],
+    )
+```
 
 ### Настройка кодов ошибок в зависимости от операции
 
+При определении кодов ошибок в полевых условиях предполагается, что разработчик будет следовать примеру, приведенному в последнем пункте [Notes](integraciya-s-drf-spectacular.md#primechaniya). Однако есть ситуации, когда этого не происходит:
+
+* При использовании сериализаторов, предоставляемых сторонними пакетами, пакет не добавляет коды ошибок в атрибут **error\_messages**.
+* При использовании пользовательской формы для класса набора фильтров, и эта форма имеет метод **clean**, который включает проверку между несколькими полями (например, при наличии полей даты начала/окончания или минимальной/максимальной цены)
+* При вызове **ValidationError** непосредственно внутри представления.
+* …
+
+В этих случаях мы можем использовать декоратор **@extend\_validation\_errors**, чтобы добавить дополнительные коды ошибок для поля к определенным действиям, методам и/или версиям. Вот один пример: у нас есть класс набора фильтров с полями **start\_date** и **end\_date**, и класс набора фильтров использует пользовательскую форму, которая проверяет, что **end\_date** больше или равен **start\_date** в методе `Form.clean`. **@extend\_validation\_errors** можно использовать в наборе представлений, чтобы добавить конкретный код ошибки в правильное поле в вашей схеме API (в этом случае `__all__` задается как имя поля, потому что django устанавливает его как имя поля для ошибок, возникающих в `Form.clean` ).
+
+```python
+from rest_framework.viewsets import ModelViewSet
+from django import forms
+from django.contrib.auth import get_user_model
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet, DateFilter
+from drf_standardized_errors.openapi_validation_errors import extend_validation_errors
+
+User = get_user_model()
+
+
+class UserForm(forms.Form):
+    start_date = forms.DateField()
+    end_date = forms.DateField()
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        if start_date and end_date and end_date < start_date:
+            msg = "The end should be greater than or equal to the start date."
+            raise forms.ValidationError(msg, code="invalid_date_range")
+        
+        return cleaned_data
+
+
+class UserFilterSet(FilterSet):
+    start_date = DateFilter(field_name="date_joined", lookup_expr="gte")
+    end_date = DateFilter(field_name="date_joined", lookup_expr="lte")
+    
+    class Meta:
+        model = User
+        fields = ["start_date", "end_date"]
+        form = UserForm
+
+
+@extend_validation_errors(
+    ["invalid_date_range"], field_name="__all__", actions=["list"], methods=["get"]
+)
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = ...
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = UserFilterSet
+```
+
+Несколько заметок о декораторе:
+
+* Его можно применить к классу представления, классу набора представлений или функции представления, украшенной **@api\_view**.
+* Его можно применять несколько раз к одному и тому же представлению.
+* Он добавляет дополнительные коды ошибок к уже собранным **drf-standardized-errors** для определенного поля.
+* Если он применяется к родительскому представлению, добавленные коды ошибок будут автоматически добавлены к дочернему представлению.
+* Коды ошибок, добавленные в дочернее представление, переопределяют коды, добавленные в родительское представление для определенного поля, метода, действия и версии.
+
 ### extend\_validation\_errors()
+
+#### drf\_standardized\_errors.openapi\_validation\_errors.extend\_validation\_errors(_error\_codes: List\[str]_, _field\_name: str | None = None_, _actions: List\[str] | None = None_, _methods: List\[str] | None = None_, _versions: List\[str] | None = None_) → Callable\[\[V], V]
+
+Декоратор представления/набора представлений для добавления дополнительных кодов ошибок к ошибкам проверки. Этот декоратор не переопределяет коды ошибок, уже собранные **drf-standardized-errors**.
+
+#### Параметры:
+
+* **error\_codes** — список кодов ошибок для добавления.
+* **field\_name** — имя сериализатора или поля формы, в которое будут добавляться коды ошибок. Можно установить значение **«non\_field\_errors»**, если коды ошибок соответствуют проверке внутри **Serializer.validate**, или **«\_\_all\_\_»**, если они соответствуют проверке внутри `Form.clean`. Его также можно оставить равным `None`, если проверка не связана с каким-либо сериализатором или формой (например, при вызове **serializers.ValidationError** непосредственно внутри представления или набора представлений).
+* **actions** — можно задать при оформлении вьюсета. Ограничивает добавленные коды ошибок указанными действиями. По умолчанию коды ошибок добавляются ко всем действиям.
+* **methods** — ограничивает добавленные коды ошибок указанными методами (**get**, **post**, …). По умолчанию добавляются коды ошибок независимо от метода.
+* **versions** — ограничивает добавленные коды ошибок указанными версиями. По умолчанию добавляются коды ошибок независимо от версии.

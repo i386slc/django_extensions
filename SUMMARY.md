@@ -2,21 +2,23 @@
 
 * [Page 1](README.md)
 
-## Модели
+## Модели и БД
 
-* [django-mptt](modeli/django-mptt/README.md)
-  * [Обзор django-mptt](modeli/django-mptt/obzor-django-mptt.md)
-  * [Установка django-mptt](modeli/django-mptt/ustanovka-django-mptt.md)
-  * [Руководство django-mptt](modeli/django-mptt/rukovodstvo-django-mptt.md)
-  * [Модели и менеджеры django-mptt](modeli/django-mptt/modeli-i-menedzhery-django-mptt.md)
-  * [Admin классы django-mptt](modeli/django-mptt/admin-klassy-django-mptt.md)
-  * [Работа с деревом в Джанго формах](modeli/django-mptt/rabota-s-derevom-v-dzhango-formakh.md)
-  * [Работа с деревом в шаблонах](modeli/django-mptt/rabota-s-derevom-v-shablonakh.md)
-  * [Утилиты для работы с деревьями](modeli/django-mptt/utility-dlya-raboty-s-derevyami.md)
-  * [Журнал изменений django-mptt](modeli/django-mptt/zhurnal-izmenenii-django-mptt.md)
-  * [Технические детали](modeli/django-mptt/tekhnicheskie-detali.md)
-  * [Тестирование MPTT моделей](modeli/django-mptt/testirovanie-mptt-modelei.md)
-* [django-mptt-admin](modeli/django-mptt-admin.md)
+* [django-mptt](modeli-i-bd/django-mptt/README.md)
+  * [Обзор django-mptt](modeli-i-bd/django-mptt/obzor-django-mptt.md)
+  * [Установка django-mptt](modeli-i-bd/django-mptt/ustanovka-django-mptt.md)
+  * [Руководство django-mptt](modeli-i-bd/django-mptt/rukovodstvo-django-mptt.md)
+  * [Модели и менеджеры django-mptt](modeli-i-bd/django-mptt/modeli-i-menedzhery-django-mptt.md)
+  * [Admin классы django-mptt](modeli-i-bd/django-mptt/admin-klassy-django-mptt.md)
+  * [Работа с деревом в Джанго формах](modeli-i-bd/django-mptt/rabota-s-derevom-v-dzhango-formakh.md)
+  * [Работа с деревом в шаблонах](modeli-i-bd/django-mptt/rabota-s-derevom-v-shablonakh.md)
+  * [Утилиты для работы с деревьями](modeli-i-bd/django-mptt/utility-dlya-raboty-s-derevyami.md)
+  * [Журнал изменений django-mptt](modeli-i-bd/django-mptt/zhurnal-izmenenii-django-mptt.md)
+  * [Технические детали](modeli-i-bd/django-mptt/tekhnicheskie-detali.md)
+  * [Тестирование MPTT моделей](modeli-i-bd/django-mptt/testirovanie-mptt-modelei.md)
+* [django-mptt-admin](modeli-i-bd/django-mptt-admin.md)
+* [django-clickhouse-backend](modeli-i-bd/django-clickhouse-backend/README.md)
+  * [Настройки конфигурации](modeli-i-bd/django-clickhouse-backend/nastroiki-konfiguracii.md)
 
 ## Формы
 
@@ -83,6 +85,7 @@
   * [Кастомизация drf-se](drf/drf-standardized-errors/kastomizaciya-drf-se.md)
   * [Поиск ошибок drf-se](drf/drf-standardized-errors/poisk-oshibok-drf-se.md)
   * [Интеграция с drf-spectacular](drf/drf-standardized-errors/integraciya-s-drf-spectacular.md)
+  * [Пример описания API drf-se](drf/drf-standardized-errors/primer-opisaniya-api-drf-se.md)
 
 ## Интернационализация
 
