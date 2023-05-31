@@ -125,3 +125,7 @@
       * [Модуль parler.utils.context](internacionalizaciya/django-parler/api-django-parler/modul-parler.utils/modul-parler.utils.context.md)
     * [Модуль parler.views](internacionalizaciya/django-parler/api-django-parler/modul-parler.views.md)
     * [Модуль parler.widgets](internacionalizaciya/django-parler/api-django-parler/modul-parler.widgets.md)
+
+## Документирование
+
+* [django-spectacular](dokumentirovanie/django-spectacular.md)
