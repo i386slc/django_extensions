@@ -1,0 +1,2 @@
+# Участие в drf-spectacular
+

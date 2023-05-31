@@ -128,4 +128,14 @@
 
 ## Документирование
 
-* [django-spectacular](dokumentirovanie/django-spectacular.md)
+* [django-spectacular](dokumentirovanie/django-spectacular/README.md)
+  * [Настройки django-spectacular](dokumentirovanie/django-spectacular/nastroiki-django-spectacular.md)
+  * [Настройка рабочего процесса и схемы](dokumentirovanie/django-spectacular/nastroika-rabochego-processa-i-skhemy.md)
+  * [Генерация клиентов](dokumentirovanie/django-spectacular/generaciya-klientov.md)
+  * [FAQ django-spectacular](dokumentirovanie/django-spectacular/faq-django-spectacular.md)
+  * [Схемы расширений](dokumentirovanie/django-spectacular/skhemy-rasshirenii.md)
+  * [От drf-yasg к OpenAPI 3](dokumentirovanie/django-spectacular/ot-drf-yasg-k-openapi-3.md)
+  * [Участие в drf-spectacular](dokumentirovanie/django-spectacular/uchastie-v-drf-spectacular.md)
+  * [Список изменений django-spectacular](dokumentirovanie/django-spectacular/spisok-izmenenii-django-spectacular.md)
+  * [Лицензия django-spectacular](dokumentirovanie/django-spectacular/licenziya-django-spectacular.md)
+  * [Обзор пакета django-spectacular](dokumentirovanie/django-spectacular/obzor-paketa-django-spectacular.md)

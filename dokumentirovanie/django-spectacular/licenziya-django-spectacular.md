@@ -1,0 +1,2 @@
+# Лицензия django-spectacular
+

@@ -1,0 +1,2 @@
+# FAQ django-spectacular
+
