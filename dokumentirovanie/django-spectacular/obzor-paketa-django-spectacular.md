@@ -1,2 +1,0 @@
-# Обзор пакета django-spectacular
-
