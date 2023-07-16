@@ -4,13 +4,13 @@
 
 ## Опции Meta
 
-* model
-* fields
-* exclude
-* form
-* filter\_overrides
+* [model](parametry-nabora-filtrov.md#avtomaticheskoe-sozdanie-filtra-s-model)
+* [fields](parametry-nabora-filtrov.md#obyavlenie-filtruemykh-polei-fields)
+* [exclude](parametry-nabora-filtrov.md#otklyuchit-polya-filtra-s-exclude)
+* [form](parametry-nabora-filtrov.md#polzovatelskie-formy-s-ispolzovaniem-form)
+* [filter\_overrides](parametry-nabora-filtrov.md#nastroite-generaciyu-filtrov-s-pomoshyu-filter\_overrides)
 
-### Автоматическое создание фильтра с моделью
+### Автоматическое создание фильтра с model
 
 **FilterSet** способен автоматически генерировать фильтры для заданных полей модели **model**. Подобно **ModelForm** в Django, фильтры создаются на основе типа поля базовой модели. Этот параметр должен сочетаться либо с параметрами **fields**, либо с параметром **exclude**, что является тем же требованием для класса Django **ModelForm**, подробно описанного [здесь](https://docs.djangoproject.com/en/stable/topics/forms/modelforms/#selecting-the-fields-to-use).
 
