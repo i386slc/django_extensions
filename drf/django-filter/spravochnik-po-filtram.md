@@ -301,3 +301,44 @@ class CustomQuerySet(models.QuerySet):
 class MyModel(models.Model):
     objects = CustomQuerySet.as_manager()
 ```
+
+### NumberFilter
+
+Фильтры на основе числового значения, используемые по умолчанию с **IntegerField**, **FloatField** и **DecimalField**.
+
+#### NumberFilter.get\_max\_validator()
+
+Возвращает экземпляр **MaxValueValidator**, который будет добавлен в `field.validators`. По умолчанию используется предельное значение `1e50`. Возвращает `None`, чтобы отключить проверку максимального значения.
+
+### NumericRangeFilter
+
+Фильтрует, когда значение находится между двумя числовыми значениями или больше минимума или меньше максимума, если указано только одно предельное значение. Этот фильтр предназначен для работы с полями числового диапазона **Postgres**, включая **IntegerRangeField**, **BigIntegerRangeField** и **FloatRangeField** (доступно начиная с Django 1.8). По умолчанию используется виджет **RangeField**.
+
+Обычные поиски по полям доступны в дополнение к нескольким поискам вложений, включая **overlap**, **contains** и **contained\_by**. Подробнее в [документации Django](https://docs.djangoproject.com/en/stable/ref/contrib/postgres/fields/#querying-range-fields).
+
+Если задано нижнее предельное значение, фильтр автоматически ищет по умолчанию **startswith** и **endswith**, если указано только верхнее предельное значение.
+
+### RangeFilter
+
+Фильтрует, когда значение находится между двумя числовыми значениями или больше минимума или меньше максимума, если указано только одно предельное значение.
+
+```python
+class F(FilterSet):
+    """Filter for Books by Price"""
+    price = RangeFilter()
+
+    class Meta:
+        model = Book
+        fields = ['price']
+
+qs = Book.objects.all().order_by('title')
+
+# Range: Книги от 5€ до 15€
+f = F({'price_min': '5', 'price_max': '15'}, queryset=qs)
+
+# Min-Only: Книги дороже 11€
+f = F({'price_min': '11'}, queryset=qs)
+
+# Max-Only: Книги стоимостью менее 19 €
+f = F({'price_max': '19'}, queryset=qs)
+```
