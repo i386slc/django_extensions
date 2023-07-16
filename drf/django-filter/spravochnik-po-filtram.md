@@ -342,3 +342,332 @@ f = F({'price_min': '11'}, queryset=qs)
 # Max-Only: Книги стоимостью менее 19 €
 f = F({'price_max': '19'}, queryset=qs)
 ```
+
+### DateRangeFilter
+
+Фильтр аналогичен дате списка изменений админки, он имеет ряд общих настроек для работы с полями даты.
+
+### DateFromToRangeFilter
+
+Аналогичен **RangeFilter**, за исключением того, что он использует даты вместо числовых значений. Его можно использовать с **DateField**. Он также работает с **DateTimeField**, но учитывает только дату.
+
+Пример использования поля **DateField**:
+
+```python
+class Comment(models.Model):
+    date = models.DateField()
+    time = models.TimeField()
+
+class F(FilterSet):
+    date = DateFromToRangeFilter()
+
+    class Meta:
+        model = Comment
+        fields = ['date']
+
+# Range: Комментарии, добавленные между 2016-01-01 и 2016-02-01
+f = F({'date_after': '2016-01-01', 'date_before': '2016-02-01'})
+
+# Min-Only: Комментарии, добавленные после 2016-01-01
+f = F({'date_after': '2016-01-01'})
+
+# Max-Only: Комментарии, добавленные до 2016-02-01
+f = F({'date_before': '2016-02-01'})
+```
+
+{% hint style="info" %}
+При фильтрации диапазонов, происходящих в даты перехода на летнее время DST, **DateFromToRangeFilter** будет использовать первый допустимый час дня для даты и времени начала и последний допустимый час дня для даты и времени окончания. Это нормально для большинства приложений, но если вы хотите настроить это поведение, вы должны расширить **DateFromToRangeFilter** и создать для него настраиваемое поле.
+{% endhint %}
+
+{% hint style="warning" %}
+Если вы используете Django до версии 1.9, вы можете столкнуться с **AmbiguousTimeError** или **NonExistentTimeError**, когда дата начала/конца соответствует началу/концу летнего времени соответственно. Это происходит из-за того, что версии до 1.9 не позволяют изменить поведение летнего времени для информирования о дате и времени.
+{% endhint %}
+
+Пример использования поля **DateTimeField**:
+
+```python
+class Article(models.Model):
+    published = models.DateTimeField()
+
+class F(FilterSet):
+    published = DateFromToRangeFilter()
+
+    class Meta:
+        model = Article
+        fields = ['published']
+
+Article.objects.create(published='2016-01-01 8:00')
+Article.objects.create(published='2016-01-20 10:00')
+Article.objects.create(published='2016-02-10 12:00')
+
+# Range: Статьи, опубликованные между 2016-01-01 и 2016-02-01
+f = F({'published_after': '2016-01-01', 'published_before': '2016-02-01'})
+assert len(f.qs) == 2
+
+# Min-Only: Статьи, опубликованные после 2016-01-01
+f = F({'published_after': '2016-01-01'})
+assert len(f.qs) == 3
+
+# Max-Only: Статьи, опубликованные до 2016-02-01
+f = F({'published_before': '2016-02-01'})
+assert len(f.qs) == 2
+```
+
+### DateTimeFromToRangeFilter
+
+Аналогичен **RangeFilter**, за исключением того, что он использует значения формата даты и времени вместо числовых значений. Его можно использовать с **DateTimeField**.
+
+Пример:
+
+```python
+class Article(models.Model):
+    published = models.DateTimeField()
+
+class F(FilterSet):
+    published = DateTimeFromToRangeFilter()
+
+    class Meta:
+        model = Article
+        fields = ['published']
+
+Article.objects.create(published='2016-01-01 8:00')
+Article.objects.create(published='2016-01-01 9:30')
+Article.objects.create(published='2016-01-02 8:00')
+
+# Range: Статьи, опубликованные 2016-01-01 между 8:00 и 10:00
+f = F({'published_after': '2016-01-01 8:00', 'published_before': '2016-01-01 10:00'})
+assert len(f.qs) == 2
+
+# Min-Only: Статьи, опубликованные после 2016-01-01 8:00
+f = F({'published_after': '2016-01-01 8:00'})
+assert len(f.qs) == 3
+
+# Max-Only: Статьи, опубликованные до 2016-01-01 10:00
+f = F({'published_before': '2016-01-01 10:00'})
+assert len(f.qs) == 2
+```
+
+### IsoDateTimeFromToRangeFilter
+
+Аналогичен **RangeFilter**, за исключением того, что он использует форматированные значения ISO 8601 вместо числовых значений. Его можно использовать с **IsoDateTimeField**.
+
+Пример:
+
+```python
+class Article(models.Model):
+    published = django_filters.IsoDateTimeField()
+
+class F(FilterSet):
+    published = IsoDateTimeFromToRangeFilter()
+
+    class Meta:
+        model = Article
+        fields = ['published']
+
+Article.objects.create(published='2016-01-01T8:00:00+01:00')
+Article.objects.create(published='2016-01-01T9:30:00+01:00')
+Article.objects.create(published='2016-01-02T8:00:00+01:00')
+
+# Range: Статьи, опубликованные 2016-01-01 между 8:00 и 10:00
+f = F({'published_after': '2016-01-01T8:00:00+01:00', 'published_before': '2016-01-01T10:00:00+01:00'})
+assert len(f.qs) == 2
+
+# Min-Only: Статьи, опубликованные после 2016-01-01 8:00
+f = F({'published_after': '2016-01-01T8:00:00+01:00'})
+assert len(f.qs) == 3
+
+# Max-Only: Статьи, опубликованные до 2016-01-01 10:00
+f = F({'published_before': '2016-01-01T10:00:00+0100'})
+assert len(f.qs) == 2
+```
+
+### TimeRangeFilter
+
+Аналогичен **RangeFilter**, за исключением того, что он использует значения формата времени вместо числовых значений. Его можно использовать с **TimeField**.
+
+Пример:
+
+```python
+class Comment(models.Model):
+    date = models.DateField()
+    time = models.TimeField()
+
+class F(FilterSet):
+    time = TimeRangeFilter()
+
+    class Meta:
+        model = Comment
+        fields = ['time']
+
+# Range: Комментарии, добавленые между 8:00 и 10:00
+f = F({'time_after': '8:00', 'time_before': '10:00'})
+
+# Min-Only: Комментарии, добавленые после 8:00
+f = F({'time_after': '8:00'})
+
+# Max-Only: Комментарии, добавленые до 10:00
+f = F({'time_before': '10:00'})
+```
+
+### AllValuesFilter
+
+Это **ChoiceFilter**, варианты выбора которого являются текущими значениями в базе данных. Итак, если в БД для данного поля у вас есть значения 5, 7 и 9, каждое из них присутствует в качестве опции. Это похоже на поведение админки по умолчанию.
+
+### AllValuesMultipleFilter
+
+Это **MultipleChoiceFilter**, варианты выбора которого являются текущими значениями в базе данных. Итак, если в БД для данного поля у вас есть значения 5, 7 и 9, каждое из них присутствует в качестве опции. Это похоже на поведение админки по умолчанию.
+
+### LookupChoiceFilter
+
+Комбинированный фильтр, который позволяет пользователям выбирать выражение поиска из раскрывающегося списка.
+
+* **lookup\_choices** — это необязательный аргумент, который принимает несколько входных форматов и в конечном итоге нормализуется как варианты, используемые в раскрывающемся списке поиска. См. `.get_lookup_choices()` для получения дополнительной информации.
+* **field\_class** — это необязательный аргумент, который позволяет вам установить класс поля внутренней формы, используемый для проверки значения. По умолчанию: `forms.CharField`
+
+Например:
+
+```python
+price = django_filters.LookupChoiceFilter(
+    field_class=forms.DecimalField,
+    lookup_choices=[
+        ('exact', 'Equals'),
+        ('gt', 'Greater than'),
+        ('lt', 'Less than'),
+    ]
+)
+```
+
+### BaseInFilter
+
+Это базовый класс, используемый для создания фильтров поиска **IN**. Ожидается, что этот класс фильтра используется в сочетании с другим классом фильтра, поскольку этот класс проверяет только то, что входящее значение разделено запятыми. Затем вторичный фильтр используется для проверки отдельных значений.
+
+Пример:
+
+```python
+class NumberInFilter(BaseInFilter, NumberFilter):
+    pass
+
+class F(FilterSet):
+    id__in = NumberInFilter(field_name='id', lookup_expr='in')
+
+    class Meta:
+        model = User
+
+User.objects.create(username='alex')
+User.objects.create(username='jacob')
+User.objects.create(username='aaron')
+User.objects.create(username='carl')
+
+# In: Пользователь с ID 1 и 3.
+f = F({'id__in': '1,3'})
+assert len(f.qs) == 2
+```
+
+### BaseRangeFilter
+
+Это базовый класс, используемый для создания фильтров поиска **RANGE**. Он ведет себя так же, как **BaseInFilter**, за исключением того, что он ожидает только два значения, разделенных запятыми.
+
+Пример:
+
+```python
+class NumberRangeFilter(BaseRangeFilter, NumberFilter):
+    pass
+
+class F(FilterSet):
+    id__range = NumberRangeFilter(field_name='id', lookup_expr='range')
+
+    class Meta:
+        model = User
+
+User.objects.create(username='alex')
+User.objects.create(username='jacob')
+User.objects.create(username='aaron')
+User.objects.create(username='carl')
+
+# Range: Пользователь с ID между 1 и 3.
+f = F({'id__range': '1,3'})
+assert len(f.qs) == 3
+```
+
+### OrderingFilter
+
+Включить упорядочивание наборов запросов. Являясь расширением **ChoiceFilter**, он принимает два дополнительных аргумента, которые используются для построения вариантов упорядочивания.
+
+* **fields** — это сопоставление {имя поля модели: имя параметра}. Имена параметров отображаются в вариантах выбора и маскируют/псевдонимы имен полей, используемых в вызове `order_by()`. Подобно выбору полей **choices**, **fields** принимают синтаксис «список из двух кортежей», который сохраняет порядок. **fields** также могут быть просто итерируемыми строками. В этом случае имена полей просто удваиваются как имена открытых параметров.
+* **field\_labels** — это необязательный аргумент, который позволяет настроить отображаемую метку для соответствующего параметра. Он принимает сопоставление {имя поля: удобочитаемая метка}. Имейте в виду, что ключ — это имя поля, а не имя открытого параметра.
+
+```python
+class UserFilter(FilterSet):
+    account = CharFilter(field_name='username')
+    status = NumberFilter(field_name='status')
+
+    o = OrderingFilter(
+        # кортеж-сопоставление сохраняет порядок
+        fields=(
+            ('username', 'account'),
+            ('first_name', 'first_name'),
+            ('last_name', 'last_name'),
+        ),
+
+        # метки не должны сохранять порядок
+        field_labels={
+            'username': 'User account',
+        }
+    )
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name']
+
+>>> UserFilter().filters['o'].field.choices
+[
+    ('account', 'User account'),
+    ('-account', 'User account (descending)'),
+    ('first_name', 'First name'),
+    ('-first_name', 'First name (descending)'),
+    ('last_name', 'Last name'),
+    ('-last_name', 'Last name (descending)'),
+]
+```
+
+Кроме того, вы можете просто предоставить свой собственный выбор **choices**, если вам требуется явный контроль над открытыми параметрами. Например, когда вы можете отключить параметры сортировки по убыванию.
+
+```python
+class UserFilter(FilterSet):
+    account = CharFilter(field_name='username')
+    status = NumberFilter(field_name='status')
+
+    o = OrderingFilter(
+        choices=(
+            ('account', 'Account'),
+        ),
+        fields={
+            'username': 'account',
+        },
+    )
+```
+
+Этот фильтр также основан на CSV и принимает несколько параметров упорядочения. Виджет выбора по умолчанию не позволяет использовать это, но полезно для API. Виджеты **SelectMultiple** несовместимы, поскольку они не могут сохранять порядок выбора.
+
+### Добавление пользовательских вариантов фильтра
+
+Если вы хотите сортировать по полям, не относящимся к модели, вам нужно добавить пользовательскую обработку в подкласс **OrderingFilter**. Например, если вы хотите отсортировать по вычисляемому фактору «релевантности», вам нужно будет сделать что-то вроде следующего:
+
+```python
+class CustomOrderingFilter(django_filters.OrderingFilter):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.extra['choices'] += [
+            ('relevance', 'Relevance'),
+            ('-relevance', 'Relevance (descending)'),
+        ]
+
+    def filter(self, qs, value):
+        # OrderingFilter основан на CSV, поэтому `value` - это список
+        if any(v in ['relevance', '-relevance'] for v in value):
+            # сортирует queryset по релевантности
+            return ...
+
+        return super().filter(qs, value)
+```
