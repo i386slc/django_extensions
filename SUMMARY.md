@@ -88,6 +88,7 @@
   * [Поиск ошибок drf-se](drf/drf-standardized-errors/poisk-oshibok-drf-se.md)
   * [Интеграция с drf-spectacular](drf/drf-standardized-errors/integraciya-s-drf-spectacular.md)
   * [Пример описания API drf-se](drf/drf-standardized-errors/primer-opisaniya-api-drf-se.md)
+* [drf-aggregation](drf/drf-aggregation.md)
 
 ## Интернационализация
 
