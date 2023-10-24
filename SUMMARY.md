@@ -90,6 +90,7 @@
   * [Пример описания API drf-se](drf/drf-standardized-errors/primer-opisaniya-api-drf-se.md)
 * [drf-aggregation](drf/drf-aggregation.md)
 * [drf-complex-filter](drf/drf-complex-filter.md)
+* [django-rest-framework-filters](drf/django-rest-framework-filters.md)
 
 ## Интернационализация
 
